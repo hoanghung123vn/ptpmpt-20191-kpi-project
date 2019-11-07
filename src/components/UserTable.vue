@@ -2,14 +2,13 @@
   <v-container>
     <v-row class="hidden-sm-and-down">
       <v-col>
-        <v-text-field label="Search" single-line outlined append-icon="mdi-magnify"></v-text-field>
+        <v-text-field label="Tìm kiếm" single-line outlined append-icon="mdi-magnify"></v-text-field>
       </v-col>
       <v-col>
-        <v-btn class color="primary" x-large>Search</v-btn>
+        <v-btn class color="primary" x-large>Tìm kiếm</v-btn>
       </v-col>
       <v-col>
         <v-overflow-btn
-          class
           :items="department"
           label="Lọc theo bộ phận"
           target="#dropdown-example"
@@ -35,9 +34,96 @@
             <td class="text-center">Nhân viên</td>
             <td>
               <div class="d-flex justify-space-around">
-                <v-btn rounded color="primary">Chi tiết</v-btn>
-                <v-btn rounded color="success">Cập nhật</v-btn>
-                <v-btn rounded color="error">Xóa</v-btn>
+                <v-row justify="center">
+                  <v-btn color="primary" dark @click.stop="dialogdetail = true" rounded>Chi tiết</v-btn>
+                  <v-dialog v-model="dialogdetail" max-width="768">
+                    <v-card>
+                      <v-card-title class="headline">Thông tin chi tiết người dùng</v-card-title>
+                      <v-card-text>Thông tin người dùng</v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="green darken-1" text @click="dialogdetail = false">Đóng</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-row>
+                <v-row justify="center">
+                  <v-dialog v-model="dialogupdate" persistent max-width="600px">
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="success" dark v-on="on" rounded>Cập nhật</v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Hồ sơ người dùng</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field label="Legal first name*" required></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                label="Legal middle name"
+                                hint="example of helper text only on focus"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                label="Legal last name*"
+                                hint="example of persistent helper text"
+                                persistent-hint
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field label="Email*" required></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field label="Password*" type="password" required></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                              <v-select
+                                :items="['0-17', '18-29', '30-54', '54+']"
+                                label="Age*"
+                                required
+                              ></v-select>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                              <v-autocomplete
+                                :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                                label="Interests"
+                                multiple
+                              ></v-autocomplete>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                        <small>*indicates required field</small>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialogupdate = false">Hủy</v-btn>
+                        <v-btn color="blue darken-1" text @click="dialogupdate = false">Cập nhật</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-row>
+                <v-row justify="center">
+                  <v-dialog v-model="dialogdelete" persistent max-width="290">
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="error" dark v-on="on" rounded>Xóa</v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="headline">Xóa tài khoản?</v-card-title>
+                      <v-card-text>Bạn có chắc chắn muốn xóa, thao tác này sẽ không thể quay lại</v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="green darken-1" text @click="dialogdelete = false">Đồng ý</v-btn>
+                        <v-btn color="green darken-1" text @click="dialogdelete = false">Hủy</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-row>
               </div>
             </td>
           </tr>
@@ -46,7 +132,6 @@
     </v-simple-table>
   </v-container>
 </template>
-
 
 <script>
 import UserService from "../UserService";
@@ -60,7 +145,10 @@ export default {
         "Phòng nhân sự",
         "Phòng kinh doanh",
         "Bộ phận hỗ trợ - hậu cần"
-      ]
+      ],
+      dialogdetail: false,
+      dialogupdate: false,
+      dialogdelete: false
     };
   },
   async created() {
@@ -71,4 +159,7 @@ export default {
 </script>
 
 <style>
+.v-autocomplete.v-input > .v-input__control > .v-input__slot {
+  cursor: pointer !important;
+}
 </style>
