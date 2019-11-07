@@ -1,12 +1,16 @@
 <template>
-  <div class="home">This is home page</div>
+  <v-container>
+    <UserTable />
+  </v-container>
 </template>
 
 <script>
 // @ is an alias to /src
-
+import UserTable from "../components/UserTable";
 export default {
   name: "home",
-  components: {}
+  components: {
+    UserTable
+  }
 };
 </script>
