@@ -1,11 +1,23 @@
 <template>
   <v-container>
-    <v-overflow-btn
-      class="my-2"
-      :items="department"
-      label="Lọc theo bộ phận"
-      target="#dropdown-example"
-    ></v-overflow-btn>
+    <v-row class="hidden-sm-and-down">
+      <v-col>
+        <v-text-field label="Search" single-line outlined append-icon="mdi-magnify"></v-text-field>
+      </v-col>
+      <v-col>
+        <v-btn class color="primary" x-large>Search</v-btn>
+      </v-col>
+      <v-col>
+        <v-overflow-btn
+          class
+          :items="department"
+          label="Lọc theo bộ phận"
+          target="#dropdown-example"
+          outlined
+          background-color="blue lighten-3"
+        ></v-overflow-btn>
+      </v-col>
+    </v-row>
     <v-simple-table>
       <template v-slot:default>
         <thead>
