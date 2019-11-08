@@ -134,8 +134,8 @@
 </template>
 
 <script>
-import UserService from "../UserService";
-const userService = new UserService();
+//import UserService from "../UserService";
+//const userService = new UserService();
 export default {
   name: "UserTable",
   data() {
@@ -151,9 +151,32 @@ export default {
       dialogdelete: false
     };
   },
-  async created() {
-    const response = await userService.getAllUser();
-    this.datas = response.data;
+  //async created() {
+  created() {
+    //const response = await userService.getAllUser();
+    //this.datas = response.data;
+    this.datas = [
+      {
+        id: "321321321",
+        name: "Pham Minh Hoang"
+      },
+      {
+        id: "323232345",
+        name: "Nguyen The Nha"
+      },
+      {
+        id: "565476773",
+        name: "Tran Kim Tuyen"
+      },
+      {
+        id: "3435566563",
+        name: "Pham Van Hung"
+      },
+      {
+        id: "547898795",
+        name: "Le Van Cuong"
+      }
+    ];
   }
 };
 </script>
