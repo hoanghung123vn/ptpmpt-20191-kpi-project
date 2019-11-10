@@ -134,8 +134,8 @@
 </template>
 
 <script>
-//import UserService from "../UserService";
-//const userService = new UserService();
+import UserService from "../UserService";
+const userService = new UserService();
 export default {
   name: "UserTable",
   data() {
@@ -152,9 +152,9 @@ export default {
     };
   },
   //async created() {
-  created() {
-    //const response = await userService.getAllUser();
-    //this.datas = response.data;
+  async created() {
+    const response = await userService.getAllUser();
+    this.datas = response.data;
     this.datas = [
       {
         id: "321321321",

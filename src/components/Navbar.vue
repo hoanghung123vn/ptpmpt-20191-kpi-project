@@ -12,6 +12,17 @@
             </v-list-item-content>
           </v-list-item>
         </router-link>
+
+        <router-link to="/department" class="side_bar_link">
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Quản lý cơ cấu bộ phận</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>    
         <router-link to="/about" class="side_bar_link">
           <v-list-item link>
             <v-list-item-action>
@@ -27,7 +38,7 @@
 
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Danh sách nhân viên</v-toolbar-title>
+      <v-toolbar-title>Giao diện Admin</v-toolbar-title>
     </v-app-bar>
   </div>
 </template>
