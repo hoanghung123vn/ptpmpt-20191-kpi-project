@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-    <UserTable />
-  </v-container>
+  <UserTable />
 </template>
 
 <script>
