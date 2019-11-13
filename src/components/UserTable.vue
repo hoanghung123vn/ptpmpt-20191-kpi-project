@@ -28,155 +28,112 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in datas" :key="user.id">
+          <tr v-for="(user, index) in users" :key="user.id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ user.name }}</td>
             <td class="text-center">Nhân viên</td>
             <td>
               <div class="d-flex justify-space-around">
-                <v-row justify="center">
-                  <v-btn color="primary" dark @click.stop="dialogdetail = true" rounded>Chi tiết</v-btn>
-                  <v-dialog v-model="dialogdetail" max-width="768">
-                    <v-card>
-                      <v-card-title class="headline">Thông tin chi tiết người dùng</v-card-title>
-                      <v-card-text>Thông tin người dùng</v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="green darken-1" text @click="dialogdetail = false">Đóng</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-row>
-                <v-row justify="center">
-                  <v-dialog v-model="dialogupdate" persistent max-width="600px">
-                    <template v-slot:activator="{ on }">
-                      <v-btn color="success" dark v-on="on" rounded>Cập nhật</v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-title>
-                        <span class="headline">Hồ sơ người dùng</span>
-                      </v-card-title>
-                      <v-card-text>
-                        <v-container>
-                          <v-row>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field label="Legal first name*" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field
-                                label="Legal middle name"
-                                hint="example of helper text only on focus"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field
-                                label="Legal last name*"
-                                hint="example of persistent helper text"
-                                persistent-hint
-                                required
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-text-field label="Email*" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-text-field label="Password*" type="password" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-select
-                                :items="['0-17', '18-29', '30-54', '54+']"
-                                label="Age*"
-                                required
-                              ></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-autocomplete
-                                :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                label="Interests"
-                                multiple
-                              ></v-autocomplete>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                        <small>*indicates required field</small>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="dialogupdate = false">Hủy</v-btn>
-                        <v-btn color="blue darken-1" text @click="dialogupdate = false">Cập nhật</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-row>
-                <v-row justify="center">
-                  <v-dialog v-model="dialogdelete" persistent max-width="290">
-                    <template v-slot:activator="{ on }">
-                      <v-btn color="error" dark v-on="on" rounded>Xóa</v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-title class="headline">Xóa tài khoản?</v-card-title>
-                      <v-card-text>Bạn có chắc chắn muốn xóa, thao tác này sẽ không thể quay lại</v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="green darken-1" text @click="dialogdelete = false">Đồng ý</v-btn>
-                        <v-btn color="green darken-1" text @click="dialogdelete = false">Hủy</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-row>
+                <DetailUser :user="user" />
+                <EditUser :user="user" />
+                <DeleteUser :user="user" />
               </div>
             </td>
           </tr>
         </tbody>
       </template>
     </v-simple-table>
+    <div class="text-center mt-5">
+      <v-pagination v-model="page" :length="6"></v-pagination>
+    </div>
+    <AddUser />
   </v-container>
 </template>
 
 <script>
 import UserService from "../UserService";
 const userService = new UserService();
+import DetailUser from "../components/DetailUser";
+import EditUser from "../components/EditUser";
+import DeleteUser from "../components/DeleteUser";
+import AddUser from "../components/AddUser";
 export default {
   name: "UserTable",
+  components: {
+    DetailUser,
+    EditUser,
+    DeleteUser,
+    AddUser
+  },
   data() {
     return {
-      datas: [],
+      users: [],
       department: [
         "Phòng nhân sự",
         "Phòng kinh doanh",
         "Bộ phận hỗ trợ - hậu cần"
       ],
-      dialogdetail: false,
-      dialogupdate: false,
-      dialogdelete: false
+      page: 1
     };
   },
-  //async created() {
   async created() {
+    //created() {
+    //console.log(this.$router.app._route.fullPath);
     const response = await userService.getAllUser();
-    this.datas = response.data;
-    this.datas = [
-      {
-        id: "321321321",
-        name: "Pham Minh Hoang"
-      },
-      {
-        id: "323232345",
-        name: "Nguyen The Nha"
-      },
-      {
-        id: "565476773",
-        name: "Tran Kim Tuyen"
-      },
-      {
-        id: "3435566563",
-        name: "Pham Van Hung"
-      },
-      {
-        id: "547898795",
-        name: "Le Van Cuong"
-      }
-    ];
+    this.users = response.data;
+
+    // this.users = [
+    //   {
+    //     id: "321321321",
+    //     name: "Pham Minh Hoang",
+    //     email: "hoangpm@gmail.com",
+    //     phoneNumber: "0982367327136",
+    //     bithday: new Date(571758625498),
+    //     statusId: 0,
+    //     dateCreated: new Date(1571758625498),
+    //     lastUpdate: new Date(1571758625498)
+    //   },
+    //   {
+    //     id: "323232345",
+    //     name: "Nguyen The Nha",
+    //     email: "hoangpm@gmail.com",
+    //     phoneNumber: "0982367327136",
+    //     bithday: new Date(571758625498),
+    //     statusId: 0,
+    //     dateCreated: new Date(1571758625498),
+    //     lastUpdate: new Date(1571758625498)
+    //   },
+    //   {
+    //     id: "565476773",
+    //     name: "Tran Kim Tuyen",
+    //     email: "hoangpm@gmail.com",
+    //     phoneNumber: "0982367327136",
+    //     bithday: new Date(571758625498),
+    //     statusId: 0,
+    //     dateCreated: new Date(1571758625498),
+    //     lastUpdate: new Date(1571758625498)
+    //   },
+    //   {
+    //     id: "3435566563",
+    //     name: "Pham Van Hung",
+    //     email: "hoangpm@gmail.com",
+    //     phoneNumber: "0982367327136",
+    //     bithday: new Date(571758625498),
+    //     statusId: 0,
+    //     dateCreated: new Date(1571758625498),
+    //     lastUpdate: new Date(1571758625498)
+    //   },
+    //   {
+    //     id: "547898795",
+    //     name: "Le Van Cuong",
+    //     email: "hoangpm@gmail.com",
+    //     phoneNumber: "0982367327136",
+    //     bithday: new Date(571758625498),
+    //     statusId: 0,
+    //     dateCreated: new Date(1571758625498),
+    //     lastUpdate: new Date(1571758625498)
+    //   }
+    // ];
   }
 };
 </script>

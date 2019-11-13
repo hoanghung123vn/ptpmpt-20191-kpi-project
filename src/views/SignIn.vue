@@ -45,6 +45,7 @@
 
 <script>
 import UserService from "../UserService";
+import bus from "../bus";
 const userService = new UserService();
 export default {
   name: "signin",
@@ -60,9 +61,16 @@ export default {
   methods: {
     async submit() {
       try {
-        await userService.signIn(this.username, this.password);
-        this.$swal("Great!", "You are ready to start", "success");
-        this.$router.push({ name: "home" });
+        const response = await userService.signIn(this.username, this.password);
+        if (response.data.token) {
+          localStorage.setItem("auth", response.data.token);
+          this.$swal("Great!", "Đăng nhập thành công", "success");
+          bus.$emit("refreshUser", "Hoang Van Hung");
+          this.$router.push({ name: "home" });
+        } else {
+          const message = response.data.errors[0].mes;
+          this.$swal("Đã có lỗi xảy ra!", `${message}`);
+        }
       } catch (error) {
         const message = error;
         this.$swal("Đã có lỗi xảy ra!", `${message}`);
