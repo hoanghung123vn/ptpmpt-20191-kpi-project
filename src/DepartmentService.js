@@ -1,26 +1,57 @@
 import axios from "axios";
 
-const apiBaseURL = "https://dsd05-dot-my-test-project-252009.appspot.com";
-const apiBaseURLUser = "https://api-ptpmpt-18.herokuapp.com/api";
+const apiBaseURL = "http://18.217.21.235:8083/api/v1/";
+
 
 export default class DepartmentService {
-  getAllUser() {
-    return axios(`${apiBaseURL}/user/getUserInfos`);
+  getAllDepartment() {
+    return axios(`${apiBaseURL}/organizationalStructure/listOrganization`);
   }
 
-  getAllUserByDepartment(departmentId) {
+  getAllDepartmentLevel(){
+    return axios(`${apiBaseURL}/organizationalStructure/listOrganizationLevel`);
+  }
+
+  getDepartmentById(departmentId) {
     return axios.get(`${apiBaseURL}/${departmentId}`)
   }
 
-  signIn(username, password) {
-    return axios.post(`${apiBaseURLUser}/auth/login`, {
+  createDepartment(id, code, description, levelId, levelName, name) {
+    return axios.post(`${apiBaseURL}/organizationalStructure/create`, {
       data: {
-        username: username,
-        password: password
+        id: id,
+        organizationCode: code,
+        organizationDescription: description,
+        organizationLevelId: levelId,
+        organizationLevelName: levelName,
+        organizationName: name
       },
       headers: {
         "Content-Type": "application/json"
       }
     })
+  }
+
+  updateDepartment(id, code, description, levelId, levelName, name)
+  {
+    return axios.put(`${apiBaseURL}/organizationalStructure/update`, {
+      data: {
+        id: id,
+        organizationCode: code,
+        organizationDescription: description,
+        organizationLevelId: levelId,
+        organizationLevelName: levelName,
+        organizationName: name
+      },
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+  }
+
+
+  deleteDepartment(id)
+  {
+    return axios.post(`${apiBaseURL}/organizationalStructure/delete?id=${id}`)
   }
 }
