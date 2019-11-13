@@ -45,6 +45,7 @@
 
 <script>
 import UserService from "../UserService";
+import bus from "../bus";
 const userService = new UserService();
 export default {
   name: "signin",
@@ -60,8 +61,10 @@ export default {
   methods: {
     async submit() {
       try {
-        await userService.signIn(this.username, this.password);
+        const response = await userService.signIn(this.username, this.password);
+        localStorage.setItem("auth", response.data.token);
         this.$swal("Great!", "You are ready to start", "success");
+        bus.$emit("refreshUser");
         this.$router.push({ name: "home" });
       } catch (error) {
         const message = error;
