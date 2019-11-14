@@ -62,10 +62,15 @@ export default {
     async submit() {
       try {
         const response = await userService.signIn(this.username, this.password);
-        localStorage.setItem("auth", response.data.token);
-        this.$swal("Great!", "You are ready to start", "success");
-        bus.$emit("refreshUser");
-        this.$router.push({ name: "home" });
+        if (response.data.token) {
+          localStorage.setItem("auth", response.data.token);
+          this.$swal("Great!", "You are ready to start", "success");
+          bus.$emit("refreshUser", "Hoang Van Hung");
+          this.$router.push({ name: "home" });
+        } else {
+          const message = response.data.errors[0].mes;
+          this.$swal("Đã có lỗi xảy ra!", `${message}`);
+        }
       } catch (error) {
         const message = error;
         this.$swal("Đã có lỗi xảy ra!", `${message}`);
