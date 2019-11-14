@@ -63,23 +63,23 @@ export default {
     current_user: null
   }),
   mounted() {
-    this.fetchUser();
+    //this.fetchUser();
     this.listenToEvent();
   },
   methods: {
     listenToEvent() {
-      bus.$on("refreshUser", () => {
-        console.log("heelllo");
-        this.fetchUser();
+      bus.$on("refreshUser", name => {
+        this.fetchUser(name);
       });
     },
-    fetchUser() {
+    fetchUser(name) {
       this.current_user = {
-        user_name: "Hoang Van Hung"
+        user_name: name
       };
     },
     logout() {
       this.current_user = null;
+      localStorage.setItem("auth", null);
     }
   }
 };
