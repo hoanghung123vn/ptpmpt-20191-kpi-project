@@ -12,7 +12,6 @@
             </v-list-item-content>
           </v-list-item>
         </router-link>
-
         <router-link to="/department" class="side_bar_link">
           <v-list-item link>
             <v-list-item-action>
@@ -20,6 +19,16 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Quản lý cơ cấu bộ phận</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>    
+        <router-link to="/configuration" class="side_bar_link">
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-settings</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Quản lý cấu hình</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </router-link>    
