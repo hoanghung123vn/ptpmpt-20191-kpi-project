@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseURL = "http://18.217.21.235:8083/api/v1/";
+const apiBaseURL = "//18.217.21.235:8083/api/v1/";
 const apiGroup5 = "https://dsd05-dot-my-test-project-252009.appspot.com/";
 
 export default class DepartmentService {
@@ -8,7 +8,7 @@ export default class DepartmentService {
     return axios(`${apiBaseURL}/organizationalStructure/listOrganization`);
   }
 
-  getAllDepartmentLevel(){
+  getAllDepartmentLevel() {
     return axios(`${apiBaseURL}/organizationalStructure/listOrganizationLevel`);
   }
 
@@ -32,8 +32,7 @@ export default class DepartmentService {
     })
   }
 
-  updateDepartment(id, code, description, levelId, levelName, name)
-  {
+  updateDepartment(id, code, description, levelId, levelName, name) {
     return axios.put(`${apiBaseURL}/organizationalStructure/update`, {
       data: {
         id: id,
@@ -50,23 +49,19 @@ export default class DepartmentService {
   }
 
 
-  deleteDepartment(id)
-  {
+  deleteDepartment(id) {
     return axios.post(`${apiBaseURL}/organizationalStructure/delete?id=${id}`)
   }
 
-  criteriasDepartment(id)
-  {
+  criteriasDepartment(id) {
     return axios.get(`http://206.189.34.124:5000/api/group8/kpis?department_id=${id}`)
   }
 
-  positionDepartment(id)
-  {
+  positionDepartment(id) {
     return axios.get(`${apiBaseURL}/position/findByOrganization?organizationId=${id}`)
   }
 
-  positionRole(positionId)
-  {
+  positionRole(positionId) {
     return axios.get(`${apiGroup5}/permission/getGroupPermissions?groupId=${positionId}`)
   }
 }
