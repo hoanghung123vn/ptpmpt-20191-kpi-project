@@ -55,7 +55,7 @@
               </v-list-item-content>
             </v-list-item>
           </template>
-          <router-link :to="{name: 'set-permission'}" class="side_bar_link">
+          <router-link :to="{name: 'set-group-user'}" class="side_bar_link">
             <v-list-item link class="ml-2" @click="changeto4">
               <v-list-item-action>
                 <v-icon :color="active4">mdi-account-multiple-plus</v-icon>
@@ -65,7 +65,10 @@
               </v-list-item-content>
             </v-list-item>
           </router-link>
-          <router-link :to="{name: 'set-permission'}" class="side_bar_link">
+          <router-link
+            :to="{name: 'set-group-permission-by-id', params: {groupId: 0}}"
+            class="side_bar_link"
+          >
             <v-list-item link class="ml-2" @click="changeto5">
               <v-list-item-action>
                 <v-icon :color="active5">mdi-shield-account</v-icon>
@@ -121,6 +124,9 @@ export default {
     listenToEvent() {
       bus.$on("refreshUser", name => {
         this.fetchUser(name);
+      });
+      bus.$on("refreshActive", () => {
+        this.changeto5();
       });
     },
     fetchUser(name) {

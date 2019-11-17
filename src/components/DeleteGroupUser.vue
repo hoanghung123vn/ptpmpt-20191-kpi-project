@@ -1,20 +1,20 @@
 <template>
-  <v-row justify-center>
-    <v-dialog v-model="dialogdelete" persistent max-width="290">
+  <v-container justify-center>
+    <v-dialog v-model="dialog" persistent max-width="350">
       <template v-slot:activator="{ on }">
         <v-btn color="error" dark v-on="on" rounded>Xóa</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Xóa tài khoản?</v-card-title>
+        <v-card-title class="headline">Xóa nhóm người dùng?</v-card-title>
         <v-card-text>Bạn có chắc chắn muốn xóa, thao tác này sẽ không thể quay lại</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="deleteUser">Đồng ý</v-btn>
-          <v-btn color="green darken-1" text @click="dialogdelete = false">Hủy</v-btn>
+          <v-btn color="green darken-1" text @click="deleteGroupUser">Đồng ý</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">Hủy</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -22,20 +22,20 @@
 // const userService = new UserService();
 import bus from "../bus";
 export default {
-  name: "DeleteUser",
+  name: "DeleteGroupUser",
   data() {
     return {
-      dialogdelete: false
+      dialog: false
     };
   },
   props: {
-    user: Object
+    id: Number
   },
   methods: {
     //async deleteUser(id) {
-    deleteUser() {
-      bus.$emit("deleteUser", this.user.id);
-      this.dialogdelete = false;
+    deleteGroupUser() {
+      bus.$emit("deleteGroup", this.id);
+      this.dialog = false;
       ///await userService.deleteUser(id);
     }
   }
