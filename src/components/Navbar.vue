@@ -33,13 +33,23 @@
               </v-list-item-content>
             </v-list-item>
           </template>
-          <router-link to="/configuration" class="side_bar_link">
+          <router-link to="/configdepartment" class="side_bar_link">
             <v-list-item link class="ml-2" @click="changeto3">
               <v-list-item-action>
                 <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>Cấu hình KPI phòng ban</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </router-link>
+          <router-link to="/configproject" class="side_bar_link">
+            <v-list-item link class="ml-2" @click="changeto6">
+              <v-list-item-action>
+                <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Cấu hình KPI dự án</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </router-link>
@@ -171,6 +181,14 @@ export default {
       this.active4 = "";
       this.active5 = "primary";
       this.title = "Thiết lập quyền cho nhóm";
+    },
+    changeto6() {
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "primary";
+      this.title = "Cấu hình KPI dự án";
     }
   }
 };

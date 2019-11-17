@@ -27,9 +27,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/SetPermission.vue')
   },
   {
-    path: '/configuration',
-    nam: 'configuration',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Configuration.vue')
+    path: '/configdepartment',
+    nam: 'configdepartment',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ConfigurationKPIDepartment.vue')
+  },
+  {
+    path: '/configproject',
+    nam: 'configproject',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ConfigurationKPIProject.vue')
   },
   {
     path: '/signin',
