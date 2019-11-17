@@ -27,7 +27,7 @@
           </v-row>
           <v-row class="ml-5">
             <v-col cols="12">
-              <div class="subtitle-1">Ngày sinh: {{new Date(user.bithday).toLocaleDateString()}}</div>
+              <div class="subtitle-1">Ngày sinh: {{new Date(user.birthday).toLocaleDateString()}}</div>
             </v-col>
           </v-row>
           <v-row class="ml-5">

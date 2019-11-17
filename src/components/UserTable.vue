@@ -57,6 +57,7 @@ import DetailUser from "../components/DetailUser";
 import EditUser from "../components/EditUser";
 import DeleteUser from "../components/DeleteUser";
 import AddUser from "../components/AddUser";
+import bus from "../bus";
 export default {
   name: "UserTable",
   components: {
@@ -75,6 +76,27 @@ export default {
       ],
       page: 1
     };
+  },
+  mounted() {
+    bus.$on("deleteUser", id => {
+      this.users = this.users.filter(user => user.id !== id);
+      this.$swal("Great!", "Xóa thành công", "success");
+    });
+    bus.$on("addUser", user => {
+      const newUser = user;
+      newUser.id = "5476543653" + this.users.length;
+      newUser.dateCreated = new Date();
+      newUser.lastUpdate = new Date();
+      newUser.statusId = 0;
+      this.users.push(newUser);
+      this.$swal("Great!", "Tạo mới thành công", "success");
+    });
+    bus.$on("updateUser", user => {
+      const index = this.users.findIndex(u => u.id === user.id);
+      user.lastUpdate = new Date();
+      this.users.splice(index, 1, user);
+      this.$swal("Great!", "Cập nhật thành công", "success");
+    });
   },
   async created() {
     //created() {

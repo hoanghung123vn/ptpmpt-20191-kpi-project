@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseURL = "//18.217.21.235:8083/api/v1/";
+const apiBaseURL = "http://18.217.21.235:8083/api/v1/";
 const apiGroup5 = "https://dsd05-dot-my-test-project-252009.appspot.com/";
 
 export default class DepartmentService {
