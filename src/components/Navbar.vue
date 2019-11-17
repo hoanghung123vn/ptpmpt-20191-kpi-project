@@ -3,45 +3,79 @@
     <v-navigation-drawer v-model="drawer" app>
       <v-list dense>
         <router-link :to="{name: 'home'}" class="side_bar_link">
-          <v-list-item link>
+          <v-list-item link @click="changeto1">
             <v-list-item-action>
-              <v-icon>mdi-home</v-icon>
+              <v-icon :color="active1">mdi-account-edit</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Trang chủ</v-list-item-title>
+              <v-list-item-title>Quản lý người dùng</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </router-link>
         <router-link to="/department" class="side_bar_link">
-          <v-list-item link>
+          <v-list-item link @click="changeto2">
             <v-list-item-action>
-              <v-icon>mdi-account-group</v-icon>
+              <v-icon :color="active2">mdi-account-group</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Quản lý cơ cấu bộ phận</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </router-link>
-        <router-link to="/configuration" class="side_bar_link">
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-settings</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Quản lý cấu hình</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </router-link>
-        <router-link :to="{name: 'set-permission'}" class="side_bar_link">
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-key-star</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Phân quyền người dùng</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </router-link>
+        <v-list-group v-model="model1">
+          <template v-slot:activator>
+            <v-list-item>
+              <v-list-item-action class="ml-n4">
+                <v-icon>mdi-settings</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Quản lý cấu hình</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <router-link to="/configuration" class="side_bar_link">
+            <v-list-item link class="ml-2" @click="changeto3">
+              <v-list-item-action>
+                <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Cấu hình KPI phòng ban</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </router-link>
+        </v-list-group>
+        <v-list-group v-model="model2">
+          <template v-slot:activator>
+            <v-list-item>
+              <v-list-item-action class="ml-n4">
+                <v-icon>mdi-key-star</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Phân quyền người dùng</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <router-link :to="{name: 'set-permission'}" class="side_bar_link">
+            <v-list-item link class="ml-2" @click="changeto4">
+              <v-list-item-action>
+                <v-icon :color="active4">mdi-account-multiple-plus</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Thiết lập nhóm người dùng</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </router-link>
+          <router-link :to="{name: 'set-permission'}" class="side_bar_link">
+            <v-list-item link class="ml-2" @click="changeto5">
+              <v-list-item-action>
+                <v-icon :color="active5">mdi-shield-account</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Thiết lập quyền cho nhóm</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </router-link>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -69,8 +103,15 @@ export default {
   name: "Navbar",
   data: () => ({
     drawer: null,
-    title: "Home",
-    current_user: null
+    title: "Danh sách người dùng",
+    current_user: null,
+    model1: false,
+    model2: false,
+    active1: "primary",
+    active2: "",
+    active3: "",
+    active4: "",
+    active5: ""
   }),
   mounted() {
     //this.fetchUser();
@@ -90,6 +131,46 @@ export default {
     logout() {
       this.current_user = null;
       localStorage.setItem("auth", null);
+    },
+    changeto1() {
+      this.active1 = "primary";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "";
+      this.title = "Danh sách người dùng";
+    },
+    changeto2() {
+      this.active1 = "";
+      this.active2 = "primary";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "";
+      this.title = "Quản lý cơ cấu bộ phận";
+    },
+    changeto3() {
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "primary";
+      this.active4 = "";
+      this.active5 = "";
+      this.title = "Cấu hình KPI phòng ban";
+    },
+    changeto4() {
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "primary";
+      this.active5 = "";
+      this.title = "Thiết lập nhóm người dùng";
+    },
+    changeto5() {
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "primary";
+      this.title = "Thiết lập quyền cho nhóm";
     }
   }
 };
