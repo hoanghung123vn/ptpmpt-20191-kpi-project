@@ -1,6 +1,6 @@
 <template>
     <v-container>   
-    <br>
+    <AddKPI/>
     <v-simple-table style="width:100%;">
         <template v-slot:default>
             <thead>
@@ -12,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="department in dataKPI.criterias" :key="department.name">
+                <tr v-for="department in dataKPI" :key="department.name">
                     <td class="text-center">{{ department.name }}</td>
                     <td class="text-center">{{ department.ratio }}</td>                  
                     <td class="text-center">Không có chú thích</td> 
@@ -28,7 +28,6 @@
     </v-simple-table>
     </v-container>
 </template>
-
 
 <style>
     .tab {
@@ -62,6 +61,10 @@
 <script>
 import EditKPI from "../components/EditKPI";
 import DeleteKPI from "../components/DeleteKPI";
+import AddKPI from "../components/AddKPI";
+
+import bus from "../bus";
+
 import Department from "../DepartmentService.js";
 const departmentService = new Department();
 
@@ -72,7 +75,8 @@ export default {
   name: "ConfigKPIProject",
   components: {
     EditKPI,
-    DeleteKPI
+    DeleteKPI,
+    AddKPI
   },
   data() {
     return {
@@ -84,32 +88,26 @@ export default {
       dialogdelete: false
     };
   },
-  methods:{
-      openCity(evt, cityName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-
-        // Show the current tab, and add an "active" class to the button that opened the tab
-        document.getElementById(cityName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
+  mounted() {   
+    bus.$on("addKPI", department => {
+      const newdepartment = department;
+      this.dataKPI.push(newdepartment);
+      this.$swal("Great!", "Tạo mới thành công", "success");
+    });
+    bus.$on("deleteKPI", name => {
+      this.dataKPI = this.dataKPI.filter(department => department.name !== name);
+      this.$swal("Great!", "Xóa thành công", "success");
+    });
+    bus.$on("updateKPI", department => {
+      const index = this.dataKPI.findIndex(kpi => kpi.name === department.name);
+      this.dataKPI.splice(index, 1, department);
+      this.$swal("Great!", "Cập nhật thành công", "success");
+    });
   },
   async created()
   {
     var response = await configurationKPIService.getKPIProjectById(1);
-    this.dataKPI = response.data;
+    this.dataKPI = response.data.criterias;
     
     var responseDepartment = await departmentService.getAllDepartment();
     this.datas = responseDepartment.data;
