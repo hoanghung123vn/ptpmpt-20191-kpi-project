@@ -11,7 +11,7 @@
                       <v-card-title>
                         <span class="headline">Thêm mới bộ phận</span>
                       </v-card-title>
-                      <v-card-text>
+                      <!-- <v-card-text>
                         <v-container>
                           <v-row>
                             <v-col cols="12" sm="6" md="4">
@@ -38,11 +38,11 @@
                           </v-row>
                         </v-container>
                         <small style="color:red;">* là các trường bắt buộc</small>
-                      </v-card-text>
+                      </v-card-text> -->
                       <v-card-actions>
                         <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text v-on:click="createDepartment();" >Thêm mới</v-btn>
                         <v-btn color="blue darken-1" text @click="dialogCreate = false">Hủy</v-btn>
-                        <v-btn color="blue darken-1" text @click="dialogCreate = false">Thêm mới</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -57,7 +57,6 @@
             </v-btn>
         </div>
     </div>
-    
     <br>
     <div style="margin-top:10%;">
     <v-simple-table style="width:100%;">
@@ -166,7 +165,7 @@
         <v-btn class="tablinks" v-on:click="openCity(event, 'departmentLevel')">Cấp bậc bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'departmentUser')">Cơ cấu bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'position')">Phân quyền theo chức danh</v-btn>
-        <v-btn class="tablinks" v-on:click="openCity(event, 'kpiEquation')">Lưới tiêu chí KPI</v-btn>
+        <v-btn class="tablinks" v-on:click="openCity(event, 'kpiEquation')">KPI bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'log')">Nhật ký hoạt động</v-btn>
     </div> 
     <div id="tabController">   
@@ -192,7 +191,7 @@
         </div>
         <div id="departmentUser" class="tabcontent">
           <v-row style="margin-left:0.5%; margin-top:0.5%; margin-bottom:0.5%;">
-            <v-dialog v-model="dialogPosition" persistent max-width="200px">
+            <v-dialog v-model="dialogPosition" persistent max-width="600px">
                     <template v-slot:activator="{ on }">
                       <v-btn color="primary" dark v-on="on" rounded>
                         <v-icon>mdi-plus</v-icon>
@@ -259,7 +258,7 @@
         </div>
         <div id="position" class="tabcontent">
            <v-row style="margin-left:0.5%; margin-top:0.5%; margin-bottom:0.5%;">
-            <v-dialog v-model="dialogPositionRole" persistent max-width="200px">
+            <v-dialog v-model="dialogPositionRole" persistent max-width="600px">
                     <template v-slot:activator="{ on }">
                       <v-btn color="primary" dark v-on="on" rounded>
                         <v-icon>mdi-plus</v-icon>
@@ -448,11 +447,12 @@ export default {
     },
     async deleted(id)
     {
-      await departmentService.deleteDepartment(id);
-      alert("Xóa bộ phận thành công");
-      var response = await departmentService.getAllDepartment();
-      this.datas = response.data;
-      location.reload();
+      alert(id);
+      // await departmentService.deleteDepartment(id);
+      // alert("Xóa bộ phận thành công");
+      // var response = await departmentService.getAllDepartment();
+      // this.datas = response.data;
+      
     },
     async criteriasDepartment(id)
     {
@@ -468,6 +468,24 @@ export default {
     {
       var positionRole = await departmentService.positionRole(positionId);
       this.positionRoleArr = positionRole.data;
+    },
+    async createDepartment()
+    {
+      var code = document.getElementById("departmentCode").value;
+      var description = document.getElementById("txtAreaDescription").value;
+      var levelId = document.getElementById("departmentLevelId").value;
+      var name = document.getElementById("departmentName").value;
+      var levelName;
+      switch(levelId)
+      {
+        case 1: levelName = "HĐQT"; break;
+        case 2: levelName = "BGĐ"; break;
+        case 3: levelName = "Phòng ban"; break;
+        case 4: levelName = "Tổ"; break;
+      }
+      await departmentService.createDepartment(code, description, levelId, levelName, name);
+      alert("Tạo bộ phận thành công");
+      this.dialogCreate = false;
     },
     async detail(id)
     {
@@ -486,7 +504,5 @@ export default {
     var levelResponse = await departmentService.getAllDepartmentLevel();
     this.levelDatas = levelResponse.data;
   },
-
-  
 };
 </script>

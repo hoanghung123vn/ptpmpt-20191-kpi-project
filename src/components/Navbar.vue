@@ -22,6 +22,10 @@
             </v-list-item-content>
           </v-list-item>
         </router-link>
+
+       
+
+
         <v-list-group v-model="model1">
           <template v-slot:activator>
             <v-list-item>
@@ -195,6 +199,14 @@ export default {
       this.active4 = "";
       this.active5 = "primary";
       this.title = "Cấu hình KPI dự án";
+    },
+    changeto8(){
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "primary";
+      this.title = "So sánh KPI bộ phận";
     }
   }
 };
