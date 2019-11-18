@@ -15,7 +15,7 @@
           <tr v-for="(group, index) in groups" :key="group.id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ group.name }}</td>
-            <td class>
+            <td class="text-center">
               <div class="d-flex justify-space-between">
                 <GroupUserDetail :group="group" />
                 <DeleteGroupUser :id="group.id" />

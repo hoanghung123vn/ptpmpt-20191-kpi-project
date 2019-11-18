@@ -46,7 +46,7 @@
           <router-link to="/configproject" class="side_bar_link">
             <v-list-item link class="ml-2" @click="changeto6">
               <v-list-item-action>
-                <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
+                <v-icon :color="active6">mdi-folder-settings-variant</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>Cấu hình KPI dự án</v-list-item-title>
@@ -124,7 +124,8 @@ export default {
     active2: "",
     active3: "",
     active4: "",
-    active5: ""
+    active5: "",
+    active6: ""
   }),
   mounted() {
     //this.fetchUser();
@@ -154,6 +155,7 @@ export default {
       this.active3 = "";
       this.active4 = "";
       this.active5 = "";
+      this.active6 = "";
       this.title = "Danh sách người dùng";
     },
     changeto2() {
@@ -162,6 +164,7 @@ export default {
       this.active3 = "";
       this.active4 = "";
       this.active5 = "";
+      this.active6 = "";
       this.title = "Quản lý cơ cấu bộ phận";
     },
     changeto3() {
@@ -170,6 +173,7 @@ export default {
       this.active3 = "primary";
       this.active4 = "";
       this.active5 = "";
+      this.active6 = "";
       this.title = "Cấu hình KPI phòng ban";
     },
     changeto4() {
@@ -178,6 +182,7 @@ export default {
       this.active3 = "";
       this.active4 = "primary";
       this.active5 = "";
+      this.active6 = "";
       this.title = "Thiết lập nhóm người dùng";
     },
     changeto5() {
@@ -186,6 +191,7 @@ export default {
       this.active3 = "";
       this.active4 = "";
       this.active5 = "primary";
+      this.active6 = "";
       this.title = "Thiết lập quyền cho nhóm";
     },
     changeto6() {
@@ -193,7 +199,8 @@ export default {
       this.active2 = "";
       this.active3 = "";
       this.active4 = "";
-      this.active5 = "primary";
+      this.active5 = "";
+      this.active6 = "primary";
       this.title = "Cấu hình KPI dự án";
     }
   }
