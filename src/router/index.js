@@ -5,6 +5,7 @@ import SignIn from '../views/SignIn.vue'
 import Department from '../views/Department.vue'
 import SetGroupUser from '../views/SetGroupUser.vue'
 import SetGroupPermission from '../views/SetGroupPermission.vue'
+import TaskLabelManagement from '../views/TaskLabelManagement.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,11 @@ const routes = [
     path: '/set-group-permission/:groupId',
     name: 'set-group-permission-by-id',
     component: SetGroupPermission
+  },
+  {
+    path: '/task-label-management',
+    name: 'task-label-management',
+    component: TaskLabelManagement
   }
 ]
 
