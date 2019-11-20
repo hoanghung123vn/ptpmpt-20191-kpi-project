@@ -16,36 +16,38 @@ export default class DepartmentService {
     return axios.get(`${apiBaseURL}/${departmentId}`)
   }
 
-  createDepartment(id, code, description, levelId, levelName, name) {
-    return axios.post(`${apiBaseURL}/organizationalStructure/create`, {
+  createDepartment(code, description, levelId, levelName, name) {
+    return axios({
+      method: "post",
       data: {
-        id: id,
         organizationCode: code,
+        organizationName: name,
         organizationDescription: description,
         organizationLevelId: levelId,
-        organizationLevelName: levelName,
-        organizationName: name
+        organizationLevelName: levelName
       },
+      url: `${apiBaseURL}/organizationalStructure/create`,
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    });
   }
 
-  updateDepartment(id, code, description, levelId, levelName, name) {
-    return axios.put(`${apiBaseURL}/organizationalStructure/update`, {
+  updateDepartment(code, description, levelId, levelName, name) {
+    return axios({
+      method: "post",
       data: {
-        id: id,
         organizationCode: code,
+        organizationName: name,
         organizationDescription: description,
         organizationLevelId: levelId,
-        organizationLevelName: levelName,
-        organizationName: name
+        organizationLevelName: levelName
       },
+      url: `${apiBaseURL}/organizationalStructure/update`,
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    });
   }
 
 
