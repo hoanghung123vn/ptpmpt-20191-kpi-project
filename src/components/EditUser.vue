@@ -38,11 +38,16 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field label="Ngày sinh*" required v-model="picker" @click="open = !open"></v-text-field>
+                  <v-chip label color="#60C8B7FF" text-color="white" @click="open=!open">
+                    <v-icon left>mdi-calendar-range</v-icon>
+                    Ngày sinh: {{ picker }}
+                  </v-chip>
                 </v-col>
-                <v-row justify="center" v-if="open">
-                  <v-date-picker v-model="picker"></v-date-picker>
-                </v-row>
+                <v-col cols="12">
+                  <v-row justify="center" v-if="open" required @click="open=!open">
+                    <v-date-picker v-model="picker"></v-date-picker>
+                  </v-row>
+                </v-col>
                 <v-col cols="12">
                   <v-select
                     :items="[0, 1, 2, 3]"
@@ -77,7 +82,7 @@ export default {
     return {
       valid: true,
       dialogupdate: false,
-      picker: new Date().toISOString().substr(0, 10),
+      picker: new Date(this.user.birthday).toISOString().substr(0, 10),
       open: false,
       requiredRule: [v => !!v || "The field is required!!!"]
     };
