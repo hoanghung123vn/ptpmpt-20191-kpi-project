@@ -92,7 +92,7 @@
         <router-link :to="{name: 'task-label-management'}" class="side_bar_link">
           <v-list-item link @click="changeto7">
             <v-list-item-action>
-              <v-icon :color="active7">mdi-account-edit</v-icon>
+              <v-icon :color="active7">mdi-label-variant</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Quản lý nhãn công việc</v-list-item-title>

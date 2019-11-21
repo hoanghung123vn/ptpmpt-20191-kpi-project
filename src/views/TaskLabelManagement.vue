@@ -14,7 +14,12 @@
         <tbody>
           <tr v-for="(label, index) in labels" :key="label.id">
             <td class="text-center">{{ index + 1 }}</td>
-            <td class="text-center">{{ label.name }}</td>
+            <td class="text-center">
+              <v-chip label :color="label.color" text-color="white">
+                <v-icon left>mdi-label-variant-outline</v-icon>
+                {{ label.name }}
+              </v-chip>
+            </td>
             <td class="text-center">
               <div class="d-flex justify-space-around">
                 <EditLabel :label="label" />
@@ -49,12 +54,12 @@ export default {
         {
           id: 0,
           name: "Backend",
-          color: "primary"
+          color: "#60C8B7FF"
         },
         {
           id: 1,
           name: "Bug",
-          color: "red"
+          color: "#60C8B7FF"
         }
       ],
       page: 1

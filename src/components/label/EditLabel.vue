@@ -14,15 +14,23 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field label="Tên*" required v-model="label.name" :rules="requiredRule"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
                     <v-text-field
-                      label="Email"
+                      label="Tên nhãn*"
                       required
-                      v-model="label.color"
+                      v-model="label.name"
                       :rules="requiredRule"
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-chip label :color="label.color" text-color="white" @click="open=!open">
+                      <v-icon left>mdi-format-color-highlight</v-icon>
+                      Màu sắc: {{ label.color }}
+                    </v-chip>
+                  </v-col>
+                  <v-col cols="12">
+                    <div class="d-flex justify-center" v-if="open">
+                      <v-color-picker mode="hexa" v-model="label.color"></v-color-picker>
+                    </div>
                   </v-col>
                 </v-row>
               </v-container>
@@ -50,7 +58,8 @@ export default {
     return {
       valid: true,
       dialogupdate: false,
-      requiredRule: [v => !!v || "The field is required!!!"]
+      requiredRule: [v => !!v || "The field is required!!!"],
+      open: false
     };
   },
   props: {

@@ -56,17 +56,16 @@
                 <v-text-field prepend-icon="mdi-home" placeholder="Địa chỉ" v-model="user.address" />
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  label="Ngày sinh*"
-                  required
-                  prepend-icon="mdi-calendar-range"
-                  v-model="user.birthday"
-                  @click="open = !open"
-                ></v-text-field>
+                <v-chip label color="#60C8B7FF" text-color="white" @click="open=!open">
+                  <v-icon left>mdi-calendar-range</v-icon>
+                  Ngày sinh: {{ user.birthday }}
+                </v-chip>
               </v-col>
-              <v-row justify="center" v-if="open">
-                <v-date-picker v-model="user.birthday"></v-date-picker>
-              </v-row>
+              <v-col cols="12">
+                <v-row justify="center" v-if="open" required @click="open=!open">
+                  <v-date-picker v-model="user.birthday"></v-date-picker>
+                </v-row>
+              </v-col>
               <v-col cols="12">
                 <v-select
                   :items="['Nam', 'Nữ']"
