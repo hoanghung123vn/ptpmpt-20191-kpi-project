@@ -13,16 +13,16 @@
                         <v-container>
                           <v-row>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field id="departmentCode" label="Mã bộ phận*" required v-model="department.organizationCode"></v-text-field>
+                              <v-text-field id="departmentCodeTxtUpdate" label="Mã bộ phận*" required v-model="department.organizationCode"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field id="departmentLevelId"
+                              <v-text-field id="departmentLevelIdTxtUpdate"
                                 label="Mã cấp bậc*" 
                                 hint="Mã cấp bậc của bộ phận lấy trong bảng cấp bậc bộ phận"
                                required v-model="department.organizationLevelId"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field id="departmentName"
+                              <v-text-field id="departmentNameTxtUpdate"
                                 label="Tên bộ phận*"
                                 hint="Tên chính thức sử dụng cho bộ phận"
                                 persistent-hint
@@ -30,7 +30,7 @@
                               ></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                              <v-textarea label="Mô tả" id="txtAreaDescription" v-model="department.organizationDescription"></v-textarea>
+                              <v-textarea label="Mô tả" id="txtAreaDescriptionTxtUpdate" v-model="department.organizationDescription"></v-textarea>
                             </v-col>
                             
                           </v-row>
@@ -40,7 +40,7 @@
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="dialogupdate = false">Hủy</v-btn>
-                        <v-btn color="blue darken-1" text @click="dialogupdate = false">Cập nhật</v-btn>
+                        <v-btn color="blue darken-1" text v-on:click="UpdateDepartment(department.id)">Cập nhật</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -49,8 +49,8 @@
 </template>
 
 <script>
-// import DepartmentService from "../DepartmentService.js";
-// const departmentService = new DepartmentService();
+import DepartmentService from "../DepartmentService.js";
+const departmentService = new DepartmentService();
 export default {
     name: "UpdateDepartment",
     data() {
@@ -62,11 +62,26 @@ export default {
         department: Object
     },
     methods:{
-        async UpdateDepartment()
+        async UpdateDepartment(id)
         {
-            
-            alert("Cập nhật bộ phận thành công");
-            this.dialogupdate = false;
+          var code = String(document.getElementById("departmentCodeTxtUpdate").value);
+          var description = String(document.getElementById("txtAreaDescriptionTxtUpdate").value);
+          var levelId = String(document.getElementById("departmentLevelIdTxtUpdate").value);
+          var name = String(document.getElementById("departmentNameTxtUpdate").value);
+          var levelName;
+          switch(levelId)
+          {
+            case 1: levelName = "HĐQT"; break;
+            case 2: levelName = "BGĐ"; break;
+            case 3: levelName = "Phòng ban"; break;
+            case 4: levelName = "Tổ"; break;
+          }
+
+        await departmentService.updateDepartment(id, code, description, levelId, levelName, name);
+        alert("Cập nhật bộ phận thành công");
+        var response = await departmentService.getAllDepartment();
+        this.datas = response.data;
+        this.dialogupdate = false;
         }
     }
 }

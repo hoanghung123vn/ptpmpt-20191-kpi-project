@@ -33,10 +33,11 @@ export default class DepartmentService {
     });
   }
 
-  updateDepartment(code, description, levelId, levelName, name) {
+  updateDepartment(id,code, description, levelId, levelName, name) {
     return axios({
       method: "post",
       data: {
+        id: id,
         organizationCode: code,
         organizationName: name,
         organizationDescription: description,
@@ -50,6 +51,10 @@ export default class DepartmentService {
     });
   }
 
+  getDepartmentDetail(id)
+  {
+    return axios.get(`${apiBaseURL}/organizationalStructure/detailOrganization?organizationId=${id}`)
+  }
 
   deleteDepartment(id) {
     return axios.post(`${apiBaseURL}/organizationalStructure/delete?id=${id}`)
@@ -63,7 +68,105 @@ export default class DepartmentService {
     return axios.get(`${apiBaseURL}/position/findByOrganization?organizationId=${id}`)
   }
 
-  positionRole(positionId) {
-    return axios.get(`${apiGroup5}/permission/getGroupPermissions?groupId=${positionId}`)
+  positionRole() {
+    //return axios.get(`${apiGroup5}/permission/getGroupPermissions?groupId=${positionId}`)
+    return axios({
+      method: "get",
+      params: {
+        listGroupId:"1,2,3,4"
+      },
+      url: `https://dsd05-dot-my-test-project-252009.appspot.com/permission/getMultiGroupPermissions`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  findByLevelId(levelId)
+  {
+    return axios.get(`${apiBaseURL}/organizationalStructure/findByLevel?levelId=${levelId}`)
+  }
+
+  findByname(name)
+  {
+    return axios.get(`${apiBaseURL}/organizationalStructure/findByNameContaining?name=${name}`)
+  }
+
+  deleteDepartmentLevel(id)
+  {
+    return axios.post(`${apiBaseURL}/organizationalStructure/deleteOrganizationLevel?levelId=${id}`)
+  }
+
+  createLevelDepartment(levelName, levelDescription)
+  {
+    return axios({
+      method: "post",
+      data: {
+        levelDescription: levelDescription,
+        levelName: levelName
+      },
+      url: `${apiBaseURL}/organizationalStructure/createOrganizationLevel`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  updateLevelDepartment(id, levelName, levelDescription)
+  {
+    return axios({
+      method: "post",
+      data: {
+        id: id,
+        levelDescription: levelDescription,
+        levelName: levelName
+      },
+      url: `${apiBaseURL}/organizationalStructure/updateOrganizationLevel`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  getDepartmentPermission(id)
+  {
+    return axios(`${apiGroup5}/permission/getDepartmentPermissions?departmentId=${id}`);
+  }
+
+  createPosition(name, departmentId, levelId)
+  {
+    return axios({
+      method: "post",
+      data: {
+        positionName: name,
+        levelId: levelId,
+        organizationId: departmentId
+      },
+      url: `${apiBaseURL}/position/create`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  getKpi(from, to, id, )
+  {
+    return axios({
+      method: "get",
+      params: {
+        startTime: from,
+        endTime: to,
+        departmentId: id
+      },
+      url: `http://18.217.21.235:8083/api/v1/departmentKPI/getDepartmentKPI`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  deletePosition(id)
+  {
+    return axios.post(`${apiBaseURL}/position/delete?positionId=${id}`)
   }
 }
