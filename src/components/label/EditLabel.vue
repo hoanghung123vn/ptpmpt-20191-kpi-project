@@ -49,8 +49,8 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
+// import LabelService from "../../LabelService";
+// const labelService = new LabelService();
 import bus from "../../bus";
 export default {
   name: "EditLabel",
@@ -66,11 +66,16 @@ export default {
     label: Object
   },
   methods: {
-    updateLabel() {
+    async updateLabel() {
       if (this.$refs.form.validate()) {
-        // const response = await userService.updateUser(this.user);
-        bus.$emit("updateLabel", this.label);
-        this.dialogupdate = false;
+        try {
+          // const response = await labelService.updateLabel(this.label._id);
+          // console.log(response.data);
+          bus.$emit("updateLabel", this.label);
+          this.dialogupdate = false;
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   }

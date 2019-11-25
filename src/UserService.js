@@ -38,9 +38,9 @@ export default class UserService {
     return axios({
       method: "post",
       data: {
-        userId: id
+        id
       },
-      url: `${apiBaseURL}/user/removeUser`,
+      url: `${apiBaseURL}/user/removeUserInfo`,
       headers: {
         "Content-Type": "application/json"
       }
@@ -74,7 +74,7 @@ export default class UserService {
         phoneNumber: user.phoneNumber,
         address: user.address,
         gender: user.gender,
-        birthday: user.birthday
+        birthday: new Date(user.birthday).getTime()
       },
       url: `${apiBaseURL}/user/addUserInfo`,
       headers: {

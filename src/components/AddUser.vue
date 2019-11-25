@@ -90,8 +90,8 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
+import UserService from "../UserService";
+const userService = new UserService();
 import bus from "../bus";
 export default {
   name: "AddUser",
@@ -113,9 +113,14 @@ export default {
     };
   },
   methods: {
-    addUser() {
+    async addUser() {
       if (this.$refs.form.validate()) {
-        // const response = userService.addUser(user);
+        try {
+          const response = await userService.addUser(this.user);
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
         bus.$emit("addUser", this.user);
         this.user = {
           name: "",

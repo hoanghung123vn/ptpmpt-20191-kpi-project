@@ -18,8 +18,8 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
+import UserService from "../UserService";
+const userService = new UserService();
 import bus from "../bus";
 export default {
   name: "DeleteUser",
@@ -33,7 +33,13 @@ export default {
   },
   methods: {
     //async deleteUser(id) {
-    deleteUser() {
+    async deleteUser() {
+      try {
+        const response = await userService.deleteUser(this.user.id);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
       bus.$emit("deleteUser", this.user.id);
       this.dialogdelete = false;
       ///await userService.deleteUser(id);

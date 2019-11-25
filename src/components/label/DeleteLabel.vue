@@ -18,8 +18,8 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
+// import LabelService from "../../LabelService";
+// const labelService = new LabelService();
 import bus from "../../bus";
 export default {
   name: "DeleteLabel",
@@ -29,14 +29,18 @@ export default {
     };
   },
   props: {
-    id: Number
+    id: String
   },
   methods: {
-    //async deleteUser(id) {
-    deleteLabel() {
-      bus.$emit("deleteLabel", this.id);
-      this.dialog = false;
-      ///await userService.deleteUser(id);
+    async deleteLabel() {
+      try {
+        // const response = await labelService.delete(this.id);
+        // console.log(response.data);
+        bus.$emit("deleteLabel", this.id);
+        this.dialog = false;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

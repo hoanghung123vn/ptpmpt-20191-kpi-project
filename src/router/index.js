@@ -6,6 +6,9 @@ import Department from '../views/Department.vue'
 import SetGroupUser from '../views/SetGroupUser.vue'
 import SetGroupPermission from '../views/SetGroupPermission.vue'
 import TaskLabelManagement from '../views/TaskLabelManagement.vue'
+import ConfigurationKPIDepartment from '../views/ConfigurationKPIDepartment.vue'
+import ConfigurationKPIProject from '../views/ConfigurationKPIProject.vue'
+
 
 Vue.use(VueRouter)
 
@@ -20,24 +23,15 @@ const routes = [
     name: 'department',
     component: Department
   },
-  // {
-
-  //   path: '/set-group-permission',
-  //   name: 'set-group-permission',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: SetGroupPermission
-  // },
   {
     path: '/configdepartment',
-    nam: 'configdepartment',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ConfigurationKPIDepartment.vue')
+    name: 'configdepartment',
+    component: ConfigurationKPIDepartment
   },
   {
     path: '/configproject',
-    nam: 'configproject',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ConfigurationKPIProject.vue')
+    name: 'configproject',
+    component: ConfigurationKPIProject
   },
   {
     path: '/signin',
