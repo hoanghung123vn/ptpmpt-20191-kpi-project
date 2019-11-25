@@ -2,7 +2,6 @@
     <v-container>
       <div>
       <p style="color:blue;"><b>DANH SÁCH CẤP BỘ PHẬN TRỰC THUỘC CÔNG TY</b></p>
-
       <div >
       <v-dialog v-model="dialogCreateDeptLevel" persistent max-width="600px">
                     <template v-slot:activator="{ on }">
@@ -335,22 +334,41 @@
         </div>
         <div id="kpiEquation" class="tabcontent">
             <div >
-              <v-col cols="12">
-                <!-- <v-text-field id="departmentCodeTxt" label="Mã bộ phận*" required></v-text-field> -->
+              <div>
+                <v-select @change="kpiChange();" v-model="kpiType" label="Lựa chọn điều kiện tìm kiếm" :items="kpiFilter"
+                               style="float: left"></v-select>
+              </div>
+              <div style="float:right"> 
+              <div id="kpiDate" style="display:none">
+                <v-col cols="12">
                 <p>Từ ngày: </p>
-                <datetime id="from_date" format="DD/MM/YYYY" width="300px" v-model="from_date" ></datetime>
+                  <datetime id="from_date" format="DD/MM/YYYY" width="300px" v-model="from_date" ></datetime>
+                </v-col>
+                <v-col cols="12">
+                  <p>Tới ngày: </p>
+                  <datetime id="to_date" format="DD/MM/YYYY" width="300px" v-model="to_date" ></datetime>
               </v-col>
-              <v-col cols="12">
-                <p>Tới ngày: </p>
-                <datetime id="to_date" format="DD/MM/YYYY" width="300px" v-model="to_date" ></datetime>
-               </v-col>
-               <v-col cols="12">
-                  <v-btn v-on:click="getKpi();" style="margin-top:10px; margein-left:5px;" type="button" color="primary" id="sidebarCollapse" class="btn btn-info navbar-btn">
+              </div>
+              <div id="kpiQuarter" style="display:none">
+                 <p>Quý: </p>
+                 <v-select v-model="kpi_quarter" :items="quarter" style="width:300px"></v-select>
+              </div>
+              <div id="kpiYear" style="display:none">
+                <v-col cols="12">
+                <p>Năm: </p>
+                  <v-text-field v-model="kpi_year" style="width:300px"></v-text-field>
+                </v-col>
+              </div> 
+                <v-col cols="12">
+                  <v-btn v-on:click="getKpi();" style="margin-top:10px; margein-left:5px; float:right;" type="button" color="primary" id="sidebarCollapse" class="btn btn-info navbar-btn">
                   <v-icon>mdi-magnify</v-icon>
                   <span>Tìm kiếm</span>
                  </v-btn>
-               </v-col>
+                </v-col>
+               </div>
+
             </div>
+            <p style="clear:both"></p>
             <br>
             <div>
             <v-simple-table style="width:100%;">
@@ -364,8 +382,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="(kpi) in kpiArr" :key="kpi.deparmentId">
-                        <td class="text-center">{{ kpi.startTime}}</td>
-                        <td class="text-center">{{ kpi.endTime }}</td>
+                        <td class="text-center">{{ new Date(kpi.startTime).toLocaleDateString()}}</td>
+                        <td class="text-center">{{ new Date(kpi.endTime).toLocaleDateString() }}</td>
                         <td class="text-center">{{ kpi.kpiValue}}</td>
                     </tr>
                 </tbody>
@@ -374,7 +392,33 @@
             </div>
         </div>
         <div id="log" class="tabcontent">
-          
+          <v-simple-table style="width:100%;">
+              <template>
+              <thead>
+                    <tr>
+                        <th class="text-center">Số thứ tự</th>
+                        <th class="text-center">Mã bộ phận(optional)</th>
+                        <th class="text-center">Mã cấp bậc(optional)</th>
+                        <th class="text-center">Mã chức danh(optional)</th>
+                        <th class="text-center">Loại hành động</th>
+                        <th class="text-center">Đối tượng tác động</th>
+                        <th class="text-center">Thời gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(logDepartment) in log" :key="logDepartment.id">
+                        <td class="text-center">{{logDepartment.id}}</td>
+                        <td class="text-center">{{logDepartment.organizationId}}</td>
+                        <td class="text-center">{{logDepartment.levelId}}</td>
+                        <td class="text-center">{{logDepartment.positionId}}</td>
+                        <td class="text-center">{{logDepartment.typeAction}}</td>
+                        <td class="text-center">{{logDepartment.typeObject}}</td>
+                        <td class="text-center">{{logDepartment.time}}</td>
+                    </tr>
+                </tbody>
+                
+            </template>
+          </v-simple-table>
         </div>
     </div>
     </v-container>
@@ -430,6 +474,8 @@ import UpdateDepartmentLevel from "../components/UpdateDepartmentLevel";
 import DeleteDepartmentLevel from "../components/DeleteDepartmentLevel";
 import DeletePosition from "../components/DeletePosition";
 import datetime from 'vuejs-datetimepicker';
+
+
 export default {
   name: "Tab",
   components:{
@@ -443,6 +489,8 @@ export default {
   },
   data() {
     return {
+      log: [
+      ],
       page:1,
       departmentPermission:[],
       selectLevelForDepartment:0,
@@ -474,7 +522,21 @@ export default {
       },
       from_date: "",
       to_date: "",
-      kpiArr:[]
+      kpiArr:[],
+      kpiType: "",
+      kpiFilter: [
+        "Theo ngày",
+        "Theo quý",
+        "Theo năm",
+      ],
+      kpi_year:"",
+      kpi_quarter:"",
+      quarter: [
+        1,
+        2,
+        3,
+        4
+      ]
     };
   },
   methods:{
@@ -567,6 +629,7 @@ export default {
       var pName = document.getElementById("departmentPositionName").value;
       await departmentService.createPosition(pName,this.lastDetailId,this.levelId);
       alert("Thêm mới chức danh thành công");
+      this.dialogPosition = false;
       this.positionDepartment(this.lastDetailId);
     },
 
@@ -609,11 +672,63 @@ export default {
     
     async getKpi()
     {
-      var res = await departmentService.getKpi(this.from_date, this.to_date, this.lastDetailId);
-      var arr = [];
-      arr.push(res.data.data);
-      this.kpiArr = arr;
+      
+      if(this.kpiType == "Theo ngày")
+      {
+        var resDate = await departmentService.getKpi(this.from_date, this.to_date, this.lastDetailId);
+        var arrDate = [];
+        arrDate.push(resDate.data.data);
+        this.kpiArr = arrDate;
+      }
+
+      if(this.kpiType == "Theo năm")
+      {
+        if(isNaN(this.kpi_year))
+        {
+          alert("Năm phải là số !");
+          return;
+        }
+        var resYear = await departmentService.getKpiYear(this.kpi_year,this.lastDetailId);
+        var arrYear = [];
+        arrYear.push(resYear.data.data);
+        console.log(resYear.data.data);
+        this.kpiArr = arrYear;
+      }
+
+      if(this.kpiType == "Theo quý")
+      {
+        var resQuar = await departmentService.getKpiQuarter(this.kpi_quarter,this.lastDetailId);
+        var arrQuar = [];
+        arrQuar.push(resQuar.data.data);
+        console.log(resQuar.data.data);
+        this.kpiArr = arrQuar;
+      }
+      
     },
+
+    kpiChange()
+    {
+      var kpiDate = document.getElementById("kpiDate");
+      var kpiYear = document.getElementById("kpiYear");
+      var kpiQuarter = document.getElementById("kpiQuarter");
+      kpiDate.style.display = 'none';
+      kpiYear.style.display = 'none';
+      kpiQuarter.style.display = 'none';
+      if(this.kpiType == "Theo ngày")
+      {
+        kpiDate.style.display = 'block';
+      }
+
+      if(this.kpiType == "Theo năm")
+      {
+        kpiYear.style.display = 'block';
+      }
+
+      if(this.kpiType == "Theo quý")
+      {
+        kpiQuarter.style.display = 'block';
+      }
+    }
 
     
   },
@@ -624,6 +739,9 @@ export default {
     
     var levelResponse = await departmentService.getAllDepartmentLevel();
     this.levelDatas = levelResponse.data;
+
+    var logRes = await departmentService.getLog();
+    this.log = logRes.data;
   },
 };
 </script>

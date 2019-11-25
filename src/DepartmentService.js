@@ -165,8 +165,44 @@ export default class DepartmentService {
     });
   }
 
+  getKpiYear(year, id)
+  {
+    return axios({
+      method: "get",
+      params: {
+        year: year,
+        departmentId: id
+      },
+      url: `http://18.217.21.235:8083/api/v1/departmentKPI/getDepartmentKPIByYear`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  getKpiQuarter(quarter, id)
+  {
+    return axios({
+      method: "get",
+      params: {
+        quarter: quarter,
+        year: 2019,
+        departmentId: id
+      },
+      url: `http://18.217.21.235:8083/api/v1/departmentKPI/getDepartmentKPIByQuarter`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
   deletePosition(id)
   {
     return axios.post(`${apiBaseURL}/position/delete?positionId=${id}`)
+  }
+
+  getLog()
+  {
+    return axios.get(`${apiBaseURL}/logOrganization/allList`)
   }
 }
