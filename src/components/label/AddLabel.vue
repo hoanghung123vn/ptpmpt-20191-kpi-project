@@ -35,8 +35,8 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
+import LabelService from "../../LabelService";
+const labelService = new LabelService();
 import bus from "../../bus";
 export default {
   name: "AddLabel",
@@ -52,17 +52,17 @@ export default {
     };
   },
   methods: {
-    addLabel() {
+    async addLabel() {
       if (this.$refs.form.validate()) {
-        // const response = userService.addUser(user);
-        const label = {
-          name: this.name,
-          color: this.color
-        };
-        bus.$emit("addLabel", label);
-        this.dialog = false;
-        this.name = "";
-        this.color = "";
+        try {
+          const response = await labelService.addLabel(this.name, this.color);
+          bus.$emit("addLabel", response.data);
+          this.dialog = false;
+          this.name = "";
+          this.color = "#3EA037FF";
+        } catch (error) {
+          this.$swal("Ooh!", "Tạo mới thất bại, hãy thử lại", "error");
+        }
       }
     }
   }

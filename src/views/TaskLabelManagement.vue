@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(label, index) in labels" :key="label.id">
+          <tr v-for="(label, index) in labels" :key="label._id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">
               <v-chip label :color="label.color" text-color="white">
@@ -23,7 +23,7 @@
             <td class="text-center">
               <div class="d-flex justify-space-around">
                 <EditLabel :label="label" />
-                <DeleteLabel :id="label.id" />
+                <DeleteLabel :id="label._id" />
               </div>
             </td>
           </tr>
@@ -41,6 +41,8 @@ import AddLabel from "../components/label/AddLabel.vue";
 import DeleteLabel from "../components/label/DeleteLabel.vue";
 import EditLabel from "../components/label/EditLabel.vue";
 import bus from "../bus";
+import LabelService from "../LabelService";
+const labelService = new LabelService();
 export default {
   name: "task-label-management",
   components: {
@@ -50,33 +52,25 @@ export default {
   },
   data() {
     return {
-      labels: [
-        {
-          id: 0,
-          name: "Backend",
-          color: "#60C8B7FF"
-        },
-        {
-          id: 1,
-          name: "Bug",
-          color: "#60C8B7FF"
-        }
-      ],
+      labels: [],
       page: 1
     };
   },
+  async created() {
+    try {
+      const response = await labelService.getLabels();
+      this.labels = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   mounted() {
     bus.$on("addLabel", label => {
-      const newLabel = {
-        id: this.labels.length,
-        name: label.name,
-        color: label.color
-      };
-      this.labels.push(newLabel);
+      this.labels.push(label);
       this.$swal("Great!", "Tạo mới thành công", "success");
     });
     bus.$on("deleteLabel", id => {
-      this.labels = this.labels.filter(label => label.id !== id);
+      this.labels = this.labels.filter(label => label._id !== id);
       this.$swal("Great!", "Xóa thành công", "success");
     });
     bus.$on("updateLabel", label => {
