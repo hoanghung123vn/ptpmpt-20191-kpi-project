@@ -18,8 +18,8 @@
 </template>
 
 <script>
-// import LabelService from "../../LabelService";
-// const labelService = new LabelService();
+import LabelService from "../../LabelService";
+const labelService = new LabelService();
 import bus from "../../bus";
 export default {
   name: "DeleteLabel",
@@ -34,8 +34,7 @@ export default {
   methods: {
     async deleteLabel() {
       try {
-        // const response = await labelService.delete(this.id);
-        // console.log(response.data);
+        await labelService.delete(this.id);
         bus.$emit("deleteLabel", this.id);
         this.dialog = false;
       } catch (error) {
