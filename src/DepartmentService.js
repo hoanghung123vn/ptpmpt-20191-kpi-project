@@ -68,12 +68,11 @@ export default class DepartmentService {
     return axios.get(`${apiBaseURL}/position/findByOrganization?organizationId=${id}`)
   }
 
-  positionRole() {
-    //return axios.get(`${apiGroup5}/permission/getGroupPermissions?groupId=${positionId}`)
+  positionRole(listGroup) {
     return axios({
       method: "get",
       params: {
-        listGroupId:"1,2,3,4"
+        listGroupId: listGroup
       },
       url: `https://dsd05-dot-my-test-project-252009.appspot.com/permission/getMultiGroupPermissions`,
       headers: {
@@ -180,13 +179,13 @@ export default class DepartmentService {
     });
   }
 
-  getKpiQuarter(quarter, id)
+  getKpiQuarter(quarter,year, id)
   {
     return axios({
       method: "get",
       params: {
         quarter: quarter,
-        year: 2019,
+        year: year,
         departmentId: id
       },
       url: `http://18.217.21.235:8083/api/v1/departmentKPI/getDepartmentKPIByQuarter`,
@@ -205,4 +204,76 @@ export default class DepartmentService {
   {
     return axios.get(`${apiBaseURL}/logOrganization/allList`)
   }
+
+  getAllModule()
+  {
+    return axios(`${apiGroup5}/permission/getAllModules`);
+  }
+
+  getDepartmentModule(id)
+  {
+    return axios(`${apiGroup5}/permission/getDepartmentModules?departmentId=${id}`);
+    
+  }
+
+  addDepartmentModule(moduleId, departmentId)
+  {
+    return axios({
+      method: "post",
+      data: {
+        moduleId: moduleId,
+        departmentId: departmentId
+      },
+      url: `${apiGroup5}/permission/addModuleDepartment`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  deleteDepartmentModule(moduleId, departmentId)
+  {
+    return axios({
+      method: "post",
+      data: {
+        moduleId: moduleId,
+        departmentId: departmentId
+      },
+      url: `${apiGroup5}/permission/removeModuleDepartment`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  addRolePermission(permissionId, roleId)
+  {
+    return axios({
+      method: "post",
+      data: {
+        permissionId: permissionId,
+        groupId: roleId
+      },
+      url: `${apiGroup5}/permission/addGroupPermission`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  deleteRolePermission(permissionId, roleId)
+  {
+    return axios({
+      method: "post",
+      data: {
+        permisisonId: permissionId,
+        groupId: roleId
+      },
+      url: `${apiGroup5}/permission/removeGroupPermission`,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
 }

@@ -170,14 +170,14 @@
         
         <v-btn class="tablinks" v-on:click="openCity(event, 'departmentUser')">Cơ cấu bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'departmentPermission')">Bộ quyền của bộ phận</v-btn>
-        <v-btn class="tablinks" v-on:click="openCity(event, 'position')">Phân quyền theo chức danh</v-btn>
+        <v-btn class="tablinks" v-on:click="openCity(event, 'position')">Phân quyền chức danh</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'kpiEquation')">KPI bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'log')">Nhật ký hoạt động</v-btn>
     </div> 
     <div id="tabController">   
         <div id="departmentUser" class="tabcontent">
           <v-row style="margin-left:0.5%; margin-top:0.5%; margin-bottom:0.5%;">
-            <v-dialog v-model="dialogPosition" persistent max-width="600px">
+            <v-dialog v-model="dialogPosition" persistent max-width="400px">
                     <template v-slot:activator="{ on }">
                       <v-btn color="primary" dark v-on="on" rounded>
                         <v-icon>mdi-plus</v-icon>
@@ -191,7 +191,8 @@
                         <v-container>
                           <v-row>
                             <v-col cols="12">
-                              <v-text-field id="departmentPositionName" label="Tên chức danh*" required></v-text-field>
+                              <p>Tên chức danh:</P>
+                              <v-text-field id="departmentPositionName" style="width:100%;" label="Tên chức danh*" required></v-text-field>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -229,7 +230,68 @@
           </v-simple-table>
         </div>
         <div id="departmentPermission" class="tabcontent">
-
+          <v-row style="margin-left:0.5%; margin-top:0.5%; margin-bottom:0.5%;">
+            <v-dialog v-model="dialogDepartmentRule" persistent max-width="400px">
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="primary" dark v-on="on" rounded>
+                        <v-icon>mdi-plus</v-icon>
+                        <span>Thêm mới</span></v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Thêm mới quyền cho bộ phận</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12">
+                              <p>Quyền được thêm:</p>
+                              <v-select v-model="selectedModule" label="Lựa chọn module quyền" id="moduleFilter" :items="allModule"
+              item-text="name" item-value="id" style="float: left;width:100%;"></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                        <small style="color:red;">* là các trường bắt buộc</small>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialogDepartmentRule = false">Hủy</v-btn>
+                        <v-btn color="blue darken-1" text v-on:click="addDepartmentModule();">Thêm mới</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+          </v-row>
+          <v-row style="margin-left:0.5%; margin-top:0.5%; margin-bottom:0.5%;">
+            <v-dialog v-model="dialogDeleteDepartmentRule" persistent max-width="400px">
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="red" dark v-on="on" rounded>
+                        <v-icon>mdi-delete</v-icon>
+                        <span>Xóa quyền</span></v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Xóa quyền cho bộ phận</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12">
+                              <p>Quyền bị xóa</p>
+                              <v-select v-model="deleteModule" label="Lựa chọn module quyền"  :items="departmentModule"
+              item-text="name" item-value="id" style="float: left;width:100%"></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                        <small style="color:red;">* là các trường bắt buộc</small>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialogDeleteDepartmentRule = false">Hủy</v-btn>
+                        <v-btn color="blue darken-1" text v-on:click="deleteDepartmentModule();">Xác nhận</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+          </v-row>
           <v-simple-table style="width:100%;">
           <template>
               <thead>
@@ -257,7 +319,7 @@
         </div>
         <div id="position" class="tabcontent">
            <v-row style="margin-left:0.5%; margin-top:0.5%; margin-bottom:0.5%;">
-            <v-dialog v-model="dialogPositionRole" persistent max-width="600px">
+            <v-dialog v-model="dialogPositionRole" persistent max-width="400px">
                     <template v-slot:activator="{ on }">
                       <v-btn color="primary" dark v-on="on" rounded>
                         <v-icon>mdi-plus</v-icon>
@@ -265,32 +327,23 @@
                     </template>
                     <v-card>
                       <v-card-title>
-                        <span class="headline">Thêm mới chức danh</span>
+                        <span class="headline">Thêm mới quyền cho chức danh</span>
                       </v-card-title>
                       <v-card-text>
                         <v-container>
                           <v-row>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field id="departmentCode" label="Mã bộ phận*" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field id="departmentLevelId"
-                                label="Mã cấp bậc*" 
-                                hint="Mã cấp bậc của bộ phận lấy trong bảng cấp bậc bộ phận"
-                               required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field id="departmentName"
-                                label="Tên bộ phận*"
-                                hint="Tên chính thức sử dụng cho bộ phận"
-                                persistent-hint
-                                required
-                              ></v-text-field>
-                            </v-col>
                             <v-col cols="12">
-                              <v-textarea label="Mô tả" id="txtAreaDescription"></v-textarea>
+                              <p>Chức danh:</p>
+                              <v-select :items="position" item-value="id"
+              item-text="positionName" v-model="selectPermissionRole" style="width:100%;" label="Lựa chọn chức danh"></v-select>
                             </v-col>
-                            
+                          </v-row>
+                          <v-row>
+                            <v-col cols="12" >
+                              <p>Quyền</p>
+                              <v-select :items="departmentPermission" item-value="id"
+              item-text="name" v-model="selectPermission" style="width:100%;" label="Lựa chọn quyền"></v-select>
+                            </v-col>
                           </v-row>
                         </v-container>
                         <small style="color:red;">* là các trường bắt buộc</small>
@@ -298,7 +351,7 @@
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="dialogPositionRole = false">Hủy</v-btn>
-                        <v-btn color="blue darken-1" text @click="dialogPositionRole = false">Thêm mới</v-btn>
+                        <v-btn color="blue darken-1" text @click="addPermissionToRole()">Thêm mới</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -308,25 +361,30 @@
               <thead>
                     <tr>
                         <th class="text-center">Mã chức danh</th>
-                        <th class="text-center">Mã phân quyền</th>
+                        <th class="text-center">Tên chức danh</th>
+                        <th class="text-center">Mã quyền</th>
                         <th class="text-center">Ngày tạo</th>
                         <th class="text-center">Ngày cập nhật</th>
                         <th class="text-center">Tên quyền</th>
                         <th class="text-center">Mô tả</th>
-                        <th class="text-center">url</th>
-                        <th class="text-center">Trạng thái</th>
+                        <th class="text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(posRole) in positionRoleArr" :key="posRole[0]">
-                        <td class="text-center">{{ 1}}</td>
-                        <td class="text-center">{{ posRole.id }}</td>
-                        <td class="text-center">{{ posRole.createdDate}}</td>
-                        <td class="text-center">{{ posRole.lastUpdated}}</td>
+                    <tr v-for="(posRole) in positionRoleArr" :key="posRole.groupId">
+                        <td class="text-center">{{ posRole.groupId}}</td>
+                        <td class="text-center">
+                          <v-select :items="position" item-value="id"
+              item-text="positionName" v-model="posRole.groupId" disabled="true"></v-select>
+                        </td>
+                        <td class="text-center">{{ posRole.id}}</td>
+                        <td class="text-center">{{ new Date(posRole.createdDate).toLocaleDateString()}}</td>
+                        <td class="text-center">{{ new Date(posRole.lastUpdated).toLocaleDateString()}}</td>
                         <td class="text-center">{{ posRole.name }}</td>
                         <td class="text-center">{{ posRole.description}}</td>
-                        <td class="text-center">{{ posRole.url }}</td>
-                        <td class="text-center">{{ posRole.statusId}}</td>
+                        <td class="text-center">
+                          <DeleteRolePermission :rolePermission="posRole"/>
+                        </td>
                     </tr>
                 </tbody>
             </template>
@@ -336,7 +394,7 @@
             <div >
               <div>
                 <v-select @change="kpiChange();" v-model="kpiType" label="Lựa chọn điều kiện tìm kiếm" :items="kpiFilter"
-                               style="float: left"></v-select>
+                               style="float: left;width:300px;"></v-select>
               </div>
               <div style="float:right"> 
               <div id="kpiDate" style="display:none">
@@ -352,6 +410,8 @@
               <div id="kpiQuarter" style="display:none">
                  <p>Quý: </p>
                  <v-select v-model="kpi_quarter" :items="quarter" style="width:300px"></v-select>
+                 <p>Năm: </p>
+                 <v-text-field v-model="kpi_quarter_year" style="width:300px"></v-text-field>
               </div>
               <div id="kpiYear" style="display:none">
                 <v-col cols="12">
@@ -382,8 +442,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="(kpi) in kpiArr" :key="kpi.deparmentId">
-                        <td class="text-center">{{ new Date(kpi.startTime).toLocaleDateString()}}</td>
-                        <td class="text-center">{{ new Date(kpi.endTime).toLocaleDateString() }}</td>
+                        <td class="text-center">{{ kpi.startTime}}</td>
+                        <td class="text-center">{{ kpi.endTime}}</td>
                         <td class="text-center">{{ kpi.kpiValue}}</td>
                     </tr>
                 </tbody>
@@ -474,7 +534,7 @@ import UpdateDepartmentLevel from "../components/UpdateDepartmentLevel";
 import DeleteDepartmentLevel from "../components/DeleteDepartmentLevel";
 import DeletePosition from "../components/DeletePosition";
 import datetime from 'vuejs-datetimepicker';
-
+import DeleteRolePermission from "../components/DeleteRolePermission";
 
 export default {
   name: "Tab",
@@ -484,14 +544,15 @@ export default {
     UpdateDepartmentLevel,
     DeleteDepartmentLevel,
     datetime,
-    DeletePosition
-
+    DeletePosition,
+    DeleteRolePermission
   },
   data() {
     return {
       log: [
       ],
       page:1,
+      departmentModule:[],
       departmentPermission:[],
       selectLevelForDepartment:0,
       selectFilter:"",
@@ -514,9 +575,9 @@ export default {
       dialogdetail: false,
       dialogupdate: false,
       dialogdelete: false,
-      
+      dialogDepartmentRule: false,
       levelId: 0,
-      lastDetailId: 0,
+      lastDetailId: -1,
       kpi:{
         
       },
@@ -530,18 +591,30 @@ export default {
         "Theo năm",
       ],
       kpi_year:"",
-      kpi_quarter:"",
+      kpi_quarter:-1,
       quarter: [
         1,
         2,
         3,
         4
-      ]
+      ],
+      allModule:[],
+      selectedModule: -1,
+      dialogDeleteDepartmentRule: false,
+      deleteModule: -1,
+      selectPermissionRole: -1,
+      selectPermission:-1,
+      kpi_quarter_year: 2019
     };
   },
   methods:{
       openCity(evt, cityName) {
         // Declare all variables
+        if(this.lastDetailId == -1)
+        {
+          alert("Vui lòng lựa chọn chi tiết một bộ phận trong danh mục \"DANH SÁCH BỘ PHẬN TRỰC THUỘC CÔNG TY\" để thao tác !");
+          return;
+        }
         var i, tabcontent, tablinks;
 
         // Get all elements with class="tabcontent" and hide them
@@ -573,8 +646,17 @@ export default {
     },
     async positionRole()
     {
-      var positionRole = await departmentService.positionRole();
+      var list = "";
+      for(var i=0;i<this.position.length;i++)
+      {
+        if(i==this.position.length-1)
+          list+=this.position[i].id;
+        else
+          list+=this.position[i].id+",";
+      }
+      var positionRole = await departmentService.positionRole(list);
       this.positionRoleArr = positionRole.data;
+      console.log(this.positionRoleArr);
     },
     async createDepartment()
     {
@@ -615,7 +697,11 @@ export default {
       
       this.positionDepartment(id);
       this.getDepartmentPermission(id);
-      //this.positionRole();
+
+      var dModule = await departmentService.getDepartmentModule(this.lastDetailId);
+      console.log(dModule.data);
+      this.departmentModule = dModule.data;
+      this.positionRole();
     },
 
     async getDepartmentPermission(id)
@@ -672,12 +758,13 @@ export default {
     
     async getKpi()
     {
-      
+      var currentYear = new Date().getFullYear(); 
       if(this.kpiType == "Theo ngày")
       {
         var resDate = await departmentService.getKpi(this.from_date, this.to_date, this.lastDetailId);
         var arrDate = [];
         arrDate.push(resDate.data.data);
+        console.log(resDate.data.data);
         this.kpiArr = arrDate;
       }
 
@@ -686,6 +773,12 @@ export default {
         if(isNaN(this.kpi_year))
         {
           alert("Năm phải là số !");
+          return;
+        }
+        
+        if(parseInt(this.kpi_year)<2000 || parseInt(this.kpi_year)>parseInt(currentYear))
+        {
+          alert("Giá trị năm không hợp lệ !");
           return;
         }
         var resYear = await departmentService.getKpiYear(this.kpi_year,this.lastDetailId);
@@ -697,7 +790,17 @@ export default {
 
       if(this.kpiType == "Theo quý")
       {
-        var resQuar = await departmentService.getKpiQuarter(this.kpi_quarter,this.lastDetailId);
+        if(this.kpi_quarter == -1 || this.kpi_quarter_year == -1)
+        {
+          alert("Quý và năm không được bỏ trống");
+          return;
+        }
+        if(parseInt(this.kpi_quarter_year)<2000 || parseInt(this.kpi_quarter_year)>parseInt(currentYear))
+        {
+          alert("Giá trị năm không hợp lệ !");
+          return;
+        }
+        var resQuar = await departmentService.getKpiQuarter(this.kpi_quarter,this.kpi_quarter_year,this.lastDetailId);
         var arrQuar = [];
         arrQuar.push(resQuar.data.data);
         console.log(resQuar.data.data);
@@ -728,8 +831,53 @@ export default {
       {
         kpiQuarter.style.display = 'block';
       }
-    }
+    },
 
+    async addDepartmentModule()
+    {
+      if(this.selectedModule == -1)
+      {
+        alert("Vui lòng lựa chọn quyền");
+        return;
+      }
+      for(var i =0;i<this.departmentPermission.length;i++)
+      {
+        if(this.selectedModule == this.departmentPermission[i].moduleId)
+        {
+          alert("Bộ phận đã quyền này !");
+          return;
+        }
+      }
+      await departmentService.addDepartmentModule(this.selectedModule, this.lastDetailId);
+      alert("Thêm quyền thành công !");
+      this.getDepartmentPermission(this.lastDetailId);
+      this.dialogDepartmentRule =false;
+    },
+
+    async deleteDepartmentModule()
+    {
+      if(this.deleteModule == -1)
+      {
+        alert("Vui lòng lựa chọn quyền muốn xóa");
+        return;
+      }
+      await departmentService.deleteDepartmentModule(this.deleteModule, this.lastDetailId);
+      alert("Xóa quyền thành công");
+      this.getDepartmentPermission(this.lastDetailId);
+      this.dialogDeleteDepartmentRule = false;
+    },
+
+    async addPermissionToRole()
+  {
+    if(this.selectPermission == -1 || this.selectPermissionRole == -1)
+    {
+      alert("Chức danh hoặc quyền còn trống ! Vui lòng lựa chọn");
+      return;
+    }
+    await departmentService.addRolePermission(this.selectPermission,this.selectPermissionRole);
+    alert("Thêm quyền cho chức danh thành công");
+    this.positionRole();
+  }
     
   },
   async created()
@@ -742,6 +890,12 @@ export default {
 
     var logRes = await departmentService.getLog();
     this.log = logRes.data;
+
+    var allModuleRes = await departmentService.getAllModule();
+    console.log(allModuleRes.data);
+    this.allModule = allModuleRes.data;
   },
+
+  
 };
 </script>
