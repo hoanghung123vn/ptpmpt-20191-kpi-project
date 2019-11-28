@@ -22,10 +22,6 @@
             </v-list-item-content>
           </v-list-item>
         </router-link>
-
-       
-
-
         <v-list-group v-model="model1">
           <template v-slot:activator>
             <v-list-item>
@@ -33,7 +29,7 @@
                 <v-icon>mdi-settings</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Quản lý cấu hình</v-list-item-title>
+                <v-list-item-title>Quản lý cấu hình KPI </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -47,10 +43,20 @@
               </v-list-item-content>
             </v-list-item>
           </router-link>
+          <router-link to="/configpositionindepartment" class="side_bar_link">
+            <v-list-item link class="ml-2" @click="changeto3">
+              <v-list-item-action>
+                <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Cấu hình KPI chức vụ</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </router-link>
           <router-link to="/configproject" class="side_bar_link">
             <v-list-item link class="ml-2" @click="changeto6">
               <v-list-item-action>
-                <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
+                <v-icon :color="active6">mdi-folder-settings-variant</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>Cấu hình KPI dự án</v-list-item-title>
@@ -93,6 +99,16 @@
             </v-list-item>
           </router-link>
         </v-list-group>
+        <router-link :to="{name: 'task-label-management'}" class="side_bar_link">
+          <v-list-item link @click="changeto7">
+            <v-list-item-action>
+              <v-icon :color="active7">mdi-label-variant</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Quản lý nhãn công việc</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
       </v-list>
     </v-navigation-drawer>
 
@@ -128,7 +144,9 @@ export default {
     active2: "",
     active3: "",
     active4: "",
-    active5: ""
+    active5: "",
+    active6: "",
+    active7: ""
   }),
   mounted() {
     //this.fetchUser();
@@ -158,6 +176,8 @@ export default {
       this.active3 = "";
       this.active4 = "";
       this.active5 = "";
+      this.active6 = "";
+      this.active7 = "";
       this.title = "Danh sách người dùng";
     },
     changeto2() {
@@ -166,6 +186,8 @@ export default {
       this.active3 = "";
       this.active4 = "";
       this.active5 = "";
+      this.active6 = "";
+      this.active7 = "";
       this.title = "Quản lý cơ cấu bộ phận";
     },
     changeto3() {
@@ -174,6 +196,8 @@ export default {
       this.active3 = "primary";
       this.active4 = "";
       this.active5 = "";
+      this.active6 = "";
+      this.active7 = "";
       this.title = "Cấu hình KPI phòng ban";
     },
     changeto4() {
@@ -182,6 +206,8 @@ export default {
       this.active3 = "";
       this.active4 = "primary";
       this.active5 = "";
+      this.active6 = "";
+      this.active7 = "";
       this.title = "Thiết lập nhóm người dùng";
     },
     changeto5() {
@@ -190,6 +216,8 @@ export default {
       this.active3 = "";
       this.active4 = "";
       this.active5 = "primary";
+      this.active6 = "";
+      this.active7 = "";
       this.title = "Thiết lập quyền cho nhóm";
     },
     changeto6() {
@@ -197,10 +225,12 @@ export default {
       this.active2 = "";
       this.active3 = "";
       this.active4 = "";
-      this.active5 = "primary";
+      this.active5 = "";
+      this.active6 = "primary";
+      this.active7 = "";
       this.title = "Cấu hình KPI dự án";
     },
-    changeto7(){
+    changeto7() {
       this.active1 = "";
       this.active2 = "";
       this.active3 = "";
