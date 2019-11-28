@@ -66,7 +66,6 @@ export default class UserService {
     });
   }
   addUser(user) {
-    console.log(user);
     return axios({
       method: "post",
       data: {
