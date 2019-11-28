@@ -73,8 +73,8 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
+import UserService from "../UserService";
+const userService = new UserService();
 import bus from "../bus";
 export default {
   name: "EditUser",
@@ -91,9 +91,9 @@ export default {
     user: Object
   },
   methods: {
-    updateUser() {
+    async updateUser() {
       if (this.$refs.form.validate()) {
-        // const response = await userService.updateUser(this.user);
+        await userService.updateUser(this.user);
         bus.$emit("updateUser", this.user);
         this.dialogupdate = false;
       }

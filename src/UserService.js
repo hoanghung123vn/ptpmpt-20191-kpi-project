@@ -66,6 +66,7 @@ export default class UserService {
     });
   }
   addUser(user) {
+    console.log(user);
     return axios({
       method: "post",
       data: {
@@ -77,9 +78,9 @@ export default class UserService {
         birthday: new Date(user.birthday).getTime()
       },
       url: `${apiBaseURL}/user/addUserInfo`,
-      headers: {
-        "Content-Type": "application/json"
-      }
+      // headers: {
+      //   "Content-Type": "application/json"
+      // }
     });
   }
 }

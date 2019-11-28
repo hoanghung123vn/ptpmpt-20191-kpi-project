@@ -116,8 +116,7 @@ export default {
     async addUser() {
       if (this.$refs.form.validate()) {
         try {
-          const response = await userService.addUser(this.user);
-          console.log(response.data);
+          await userService.addUser(this.user);
         } catch (error) {
           console.log(error);
         }

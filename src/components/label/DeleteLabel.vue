@@ -38,7 +38,7 @@ export default {
         bus.$emit("deleteLabel", this.id);
         this.dialog = false;
       } catch (error) {
-        console.log(error);
+        this.$swal("Ohh", "Có gì đó sai, hãy thử lại!", "error");
       }
     }
   }

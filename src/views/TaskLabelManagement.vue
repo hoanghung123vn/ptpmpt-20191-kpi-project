@@ -61,7 +61,7 @@ export default {
       const response = await labelService.getLabels();
       this.labels = response.data;
     } catch (error) {
-      console.log(error);
+      this.$swal("Ohh!", "Có gì đó sai, hãy tải lại trang", "error");
     }
   },
   mounted() {
