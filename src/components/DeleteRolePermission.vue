@@ -1,6 +1,6 @@
 <template>
     <div style="margin-left:2%">
-        <v-row justify="right">
+        <v-row>
                   <v-dialog v-model="dialogdeleterole" persistent max-width="270">
                     <template v-slot:activator="{ on }">
                       <v-btn color="error" dark v-on="on" rounded>Xóa</v-btn>

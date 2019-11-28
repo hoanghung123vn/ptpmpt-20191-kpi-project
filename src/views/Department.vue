@@ -375,7 +375,7 @@
                         <td class="text-center">{{ posRole.groupId}}</td>
                         <td class="text-center">
                           <v-select :items="position" item-value="id"
-              item-text="positionName" v-model="posRole.groupId" disabled="true"></v-select>
+              item-text="positionName" v-model="posRole.groupId" disabled=true></v-select>
                         </td>
                         <td class="text-center">{{ posRole.id}}</td>
                         <td class="text-center">{{ new Date(posRole.createdDate).toLocaleDateString()}}</td>
@@ -876,6 +876,7 @@ export default {
     }
     await departmentService.addRolePermission(this.selectPermission,this.selectPermissionRole);
     alert("Thêm quyền cho chức danh thành công");
+    this.dialogPositionRole = false;
     this.positionRole();
   }
     

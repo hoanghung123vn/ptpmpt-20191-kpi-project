@@ -261,12 +261,12 @@ export default class DepartmentService {
     });
   }
 
-  deleteRolePermission(permissionId, roleId)
+  deleteRolePermission(id, roleId)
   {
     return axios({
       method: "post",
       data: {
-        permisisonId: permissionId,
+        permissionId: id,
         groupId: roleId
       },
       url: `${apiGroup5}/permission/removeGroupPermission`,
