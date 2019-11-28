@@ -36,7 +36,11 @@ export default {
       try {
         await userService.deleteUser(this.user.id);
       } catch (error) {
-        console.log(error);
+        this.$swal(
+          "Ohh!",
+          "Cập nhật trạng thái thất bại, hãy thử lại!",
+          "error"
+        );
       }
       bus.$emit("deleteUser", this.user);
       this.dialogdelete = false;

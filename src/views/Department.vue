@@ -656,7 +656,7 @@ export default {
       }
       var positionRole = await departmentService.positionRole(list);
       this.positionRoleArr = positionRole.data;
-      console.log(this.positionRoleArr);
+      // console.log(this.positionRoleArr);
     },
     async createDepartment()
     {
@@ -699,7 +699,7 @@ export default {
       this.getDepartmentPermission(id);
 
       var dModule = await departmentService.getDepartmentModule(this.lastDetailId);
-      console.log(dModule.data);
+      // console.log(dModule.data);
       this.departmentModule = dModule.data;
       this.positionRole();
     },
@@ -764,7 +764,7 @@ export default {
         var resDate = await departmentService.getKpi(this.from_date, this.to_date, this.lastDetailId);
         var arrDate = [];
         arrDate.push(resDate.data.data);
-        console.log(resDate.data.data);
+        // console.log(resDate.data.data);
         this.kpiArr = arrDate;
       }
 
@@ -784,7 +784,7 @@ export default {
         var resYear = await departmentService.getKpiYear(this.kpi_year,this.lastDetailId);
         var arrYear = [];
         arrYear.push(resYear.data.data);
-        console.log(resYear.data.data);
+        // console.log(resYear.data.data);
         this.kpiArr = arrYear;
       }
 
@@ -803,7 +803,7 @@ export default {
         var resQuar = await departmentService.getKpiQuarter(this.kpi_quarter,this.kpi_quarter_year,this.lastDetailId);
         var arrQuar = [];
         arrQuar.push(resQuar.data.data);
-        console.log(resQuar.data.data);
+        // console.log(resQuar.data.data);
         this.kpiArr = arrQuar;
       }
       
@@ -893,7 +893,7 @@ export default {
     this.log = logRes.data;
 
     var allModuleRes = await departmentService.getAllModule();
-    console.log(allModuleRes.data);
+    // console.log(allModuleRes.data);
     this.allModule = allModuleRes.data;
   },
 
