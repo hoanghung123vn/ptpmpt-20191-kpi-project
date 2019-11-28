@@ -118,7 +118,7 @@ export default {
         try {
           await userService.addUser(this.user);
         } catch (error) {
-          console.log(error);
+          this.$swal("Ohh!", "Tạo người dùng mới thất bại", "error");
         }
         bus.$emit("addUser", this.user);
         this.user = {
