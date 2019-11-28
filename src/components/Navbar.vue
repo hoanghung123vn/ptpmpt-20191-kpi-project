@@ -200,13 +200,15 @@ export default {
       this.active5 = "primary";
       this.title = "Cấu hình KPI dự án";
     },
-    changeto8(){
+    changeto7(){
       this.active1 = "";
       this.active2 = "";
       this.active3 = "";
       this.active4 = "";
-      this.active5 = "primary";
-      this.title = "So sánh KPI bộ phận";
+      this.active5 = "";
+      this.active6 = "";
+      this.active7 = "primary";
+      this.title = "Quản lý nhãn công việc";
     }
   }
 };
