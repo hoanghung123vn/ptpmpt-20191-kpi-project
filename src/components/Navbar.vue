@@ -29,7 +29,7 @@
                 <v-icon>mdi-settings</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Quản lý cấu hình KPI </v-list-item-title>
+                <v-list-item-title>Quản lý cấu hình KPI</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -44,9 +44,9 @@
             </v-list-item>
           </router-link>
           <router-link to="/configpositionindepartment" class="side_bar_link">
-            <v-list-item link class="ml-2" @click="changeto3">
+            <v-list-item link class="ml-2" @click="changeto8">
               <v-list-item-action>
-                <v-icon :color="active3">mdi-folder-settings-variant</v-icon>
+                <v-icon :color="active8">mdi-folder-settings-variant</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>Cấu hình KPI chức vụ</v-list-item-title>
@@ -146,7 +146,8 @@ export default {
     active4: "",
     active5: "",
     active6: "",
-    active7: ""
+    active7: "",
+    active8: ""
   }),
   mounted() {
     //this.fetchUser();
@@ -178,6 +179,7 @@ export default {
       this.active5 = "";
       this.active6 = "";
       this.active7 = "";
+      this.active8 = "";
       this.title = "Danh sách người dùng";
     },
     changeto2() {
@@ -188,6 +190,7 @@ export default {
       this.active5 = "";
       this.active6 = "";
       this.active7 = "";
+      this.active8 = "";
       this.title = "Quản lý cơ cấu bộ phận";
     },
     changeto3() {
@@ -198,6 +201,7 @@ export default {
       this.active5 = "";
       this.active6 = "";
       this.active7 = "";
+      this.active8 = "";
       this.title = "Cấu hình KPI phòng ban";
     },
     changeto4() {
@@ -208,6 +212,7 @@ export default {
       this.active5 = "";
       this.active6 = "";
       this.active7 = "";
+      this.active8 = "";
       this.title = "Thiết lập nhóm người dùng";
     },
     changeto5() {
@@ -218,6 +223,7 @@ export default {
       this.active5 = "primary";
       this.active6 = "";
       this.active7 = "";
+      this.active8 = "";
       this.title = "Thiết lập quyền cho nhóm";
     },
     changeto6() {
@@ -228,6 +234,7 @@ export default {
       this.active5 = "";
       this.active6 = "primary";
       this.active7 = "";
+      this.active8 = "";
       this.title = "Cấu hình KPI dự án";
     },
     changeto7() {
@@ -237,8 +244,20 @@ export default {
       this.active4 = "";
       this.active5 = "";
       this.active6 = "";
+      this.active8 = "";
       this.active7 = "primary";
       this.title = "Quản lý nhãn công việc";
+    },
+    changeto8() {
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "";
+      this.active6 = "";
+      this.active7 = "";
+      this.active8 = "primary";
+      this.title = "Cấu hình KPI chức vụ";
     }
   }
 };
