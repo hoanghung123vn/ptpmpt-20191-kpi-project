@@ -4,11 +4,11 @@
     <v-col>
         <AddKPI/> 
     </v-col>
-
     <v-col>
+        
     </v-col>
-
-    <v-col>       
+    <v-col>
+        <SelectPositions/>
     </v-col>
     <v-col>
         <SelectDepartment/>
@@ -40,7 +40,7 @@
             </tbody>
         </template>
     </v-simple-table>
-    <UpdateAllKPI :dataKPI="dataKPI" />
+    <UpdateAllKPI :dataKPI=this.dataKPI />
     </v-container>
 </template>
 
@@ -66,7 +66,7 @@ import DeleteKPI from "../components/DeleteKPI";
 import AddKPI from "../components/AddKPI";
 import SelectDepartment from "../components/SelectDepartment";
 import UpdateAllKPI from "../components/UpdateAllKPI";
-
+import SelectPositions from "../components/SelectPositions";
 
 import ConfigurationKPIService from "../ConfigurationKPIService.js";
 const configurationKPIService = new ConfigurationKPIService();
@@ -74,13 +74,14 @@ const configurationKPIService = new ConfigurationKPIService();
 import bus from "../bus";
 
 export default {
-  name: "ConfigKPIDepartment",
+  name: "ConfiguartionKPIPositionsDepartment",
   components: {
     EditKPI,
     DeleteKPI,
     AddKPI,
     SelectDepartment,
-    UpdateAllKPI
+    UpdateAllKPI,
+    SelectPositions
   },
   data() {
     return {
@@ -107,12 +108,12 @@ export default {
     });
     bus.$on("updateAllKPI", dataKPI => {
       this.dataKPI = dataKPI;
-      
+      this.$swal("Great!", "Cập nhật thành công", "success");
     });
   },
   async created()
   {
-    var response = await configurationKPIService.getKPIDepartmentById(1);
+    var response = await configurationKPIService.getKPIPositionsInDepartment();
     this.dataKPI = response.data;
     
     this.criteriasKPI =  this.dataKPI.criterias

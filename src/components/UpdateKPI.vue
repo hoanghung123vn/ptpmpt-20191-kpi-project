@@ -16,8 +16,7 @@
                 <v-text-field label="Tên tiêu chí*" required v-model="department.name" :rules="requiredRule"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="Tỉ lệ*" required v-model="department.ratio" :rules="requiredRule">               
-                </v-text-field>
+                <v-text-field label="Tỉ lệ*" required v-model="department.ratio" :rules="requiredRule"></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field label="Chú thích" required v-model="department.note"></v-text-field>
@@ -63,6 +62,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

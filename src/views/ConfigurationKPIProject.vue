@@ -1,6 +1,17 @@
 <template>
     <v-container>   
-    <AddKPI/>
+    <v-row class="hidden-sm-and-down">
+    <v-col>
+        <AddKPI/> 
+    </v-col>
+    <v-col>
+    </v-col>
+    <v-col>
+    </v-col>
+    <v-col>
+        <SelectProject/>
+    </v-col>
+    </v-row>
     <v-simple-table style="width:100%;">
         <template v-slot:default>
             <thead>
@@ -12,10 +23,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="department in dataKPI" :key="department.name">
+                <tr v-for="department in dataKPI.criterias" :key="department.name">
                     <td class="text-center">{{ department.name }}</td>
                     <td class="text-center">{{ department.ratio }}</td>                  
-                    <td class="text-center">Không có chú thích</td> 
+                    <td class="text-center">{{ department.note }}</td> 
                     <td>
                     <div class="d-flex justify-space-around">
                     <EditKPI :department="department" />
@@ -26,6 +37,7 @@
             </tbody>
         </template>
     </v-simple-table>
+    <UpdateAllKPI :dataKPI=this.dataKPI />
     </v-container>
 </template>
 
@@ -62,6 +74,8 @@
 import EditKPI from "../components/EditKPI";
 import DeleteKPI from "../components/DeleteKPI";
 import AddKPI from "../components/AddKPI";
+import SelectProject from "../components/SelectProject";
+import UpdateAllKPI from "../components/UpdateAllKPI";
 
 import bus from "../bus";
 
@@ -76,11 +90,14 @@ export default {
   components: {
     EditKPI,
     DeleteKPI,
-    AddKPI
+    AddKPI,
+    SelectProject,
+    UpdateAllKPI
   },
   data() {
     return {
       dataKPI: [],
+      criteriasKPI: [],
       datas: [],
       levelDatas:[],
       dialogdetail: false,
@@ -89,26 +106,33 @@ export default {
     };
   },
   mounted() {   
-    bus.$on("addKPI", department => {
+     bus.$on("addKPI", department => {
       const newdepartment = department;
-      this.dataKPI.push(newdepartment);
+      this.dataKPI.criterias.push(newdepartment);
       this.$swal("Great!", "Tạo mới thành công", "success");
     });
     bus.$on("deleteKPI", name => {
-      this.dataKPI = this.dataKPI.filter(department => department.name !== name);
+      this.dataKPI.criterias = this.dataKPI.criterias.filter(department => department.name !== name);
       this.$swal("Great!", "Xóa thành công", "success");
     });
     bus.$on("updateKPI", department => {
-      const index = this.dataKPI.findIndex(kpi => kpi.name === department.name);
-      this.dataKPI.splice(index, 1, department);
+      const index = this.dataKPI.criterias.findIndex(kpi => kpi.name === department.name);
+      this.dataKPI.criterias.splice(index, 1, department);
+      this.$swal("Great!", "Cập nhật thành công", "success");
+    });
+    bus.$on("updateAllKPI", dataKPI => {
+      this.dataKPI = dataKPI;
       this.$swal("Great!", "Cập nhật thành công", "success");
     });
   },
   async created()
   {
-    var response = await configurationKPIService.getKPIProjectById(1);
-    this.dataKPI = response.data.criterias;
-    
+    //eda3b9b1-ce95-47f7-91ec-e03d1eb2bc4d, 1664a77a-9c82-46af-83fe-b05b5e2e4bf8
+    var response = await configurationKPIService.getKPIProjectById("eda3b9b1-ce95-47f7-91ec-e03d1eb2bc4d");
+    this.dataKPI = response.data;
+
+    this.criteriasKPI =  this.dataKPI.criterias
+
     var responseDepartment = await departmentService.getAllDepartment();
     this.datas = responseDepartment.data;
 

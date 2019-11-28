@@ -8,7 +8,7 @@ import SetGroupPermission from '../views/SetGroupPermission.vue'
 import TaskLabelManagement from '../views/TaskLabelManagement.vue'
 import ConfigurationKPIDepartment from '../views/ConfigurationKPIDepartment.vue'
 import ConfigurationKPIProject from '../views/ConfigurationKPIProject.vue'
-
+import ConfigurationKPIPositionInDepartment from '../views/ConfiguartionKPIPositionsDepartment.vue'
 
 Vue.use(VueRouter)
 
@@ -52,7 +52,12 @@ const routes = [
     path: '/task-label-management',
     name: 'task-label-management',
     component: TaskLabelManagement
-  }
+  },
+  {
+    path: '/configpositionindepartment',
+    name: 'configpositionindepartment',
+    component: ConfigurationKPIPositionInDepartment
+  },
 ]
 
 const router = new VueRouter({
