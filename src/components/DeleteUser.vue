@@ -2,7 +2,7 @@
   <v-row justify-center>
     <v-dialog v-model="dialogdelete" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="error" dark v-on="on" rounded>Xóa</v-btn>
+        <v-btn color="warning" dark v-on="on" rounded>Khóa</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">Xóa tài khoản?</v-card-title>
@@ -32,17 +32,14 @@ export default {
     user: Object
   },
   methods: {
-    //async deleteUser(id) {
     async deleteUser() {
       try {
-        const response = await userService.deleteUser(this.user.id);
-        console.log(response.data);
+        await userService.deleteUser(this.user.id);
       } catch (error) {
         console.log(error);
       }
-      bus.$emit("deleteUser", this.user.id);
+      bus.$emit("deleteUser", this.user);
       this.dialogdelete = false;
-      ///await userService.deleteUser(id);
     }
   }
 };

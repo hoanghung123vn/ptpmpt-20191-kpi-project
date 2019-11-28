@@ -23,7 +23,7 @@
           <tr>
             <th class="text-center">STT</th>
             <th class="text-center">Họ Tên</th>
-            <th class="text-center">Chức vụ</th>
+            <th class="text-center">Trạng thái</th>
             <th class="text-center">Hành động</th>
           </tr>
         </thead>
@@ -31,7 +31,12 @@
           <tr v-for="(user, index) in users" :key="user.id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ user.name }}</td>
-            <td class="text-center">Nhân viên</td>
+            <td class="text-center">
+              <v-chip label :color="(user.statusId === 0) ? 'blue' : 'warning'" text-color="white">
+                <v-icon left>mdi-label-variant-outline</v-icon>
+                {{ (user.statusId === 0) ? "Hoạt động" : "Đã khóa" }}
+              </v-chip>
+            </td>
             <td>
               <div class="d-flex justify-space-around">
                 <DetailUser :user="user" />
@@ -78,17 +83,15 @@ export default {
     };
   },
   mounted() {
-    bus.$on("deleteUser", id => {
-      this.users = this.users.filter(user => user.id !== id);
-      this.$swal("Great!", "Xóa thành công", "success");
+    bus.$on("deleteUser", user => {
+      const index = this.users.findIndex(u => (u.id = user.id));
+      user.lastUpdate = new Date();
+      user.statusId = 1;
+      this.users.splice(index, 1, user);
+      this.$swal("Great!", "Cập nhật trạng thái thành công", "success");
     });
     bus.$on("addUser", user => {
-      const newUser = user;
-      newUser.id = "5476543653" + this.users.length;
-      newUser.dateCreated = new Date();
-      newUser.lastUpdate = new Date();
-      newUser.statusId = 0;
-      this.users.push(newUser);
+      this.users.push(user);
       this.$swal("Great!", "Tạo mới thành công", "success");
     });
     bus.$on("updateUser", user => {

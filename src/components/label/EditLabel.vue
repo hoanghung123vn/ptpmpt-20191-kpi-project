@@ -77,7 +77,7 @@ export default {
           bus.$emit("updateLabel", this.label);
           this.dialogupdate = false;
         } catch (error) {
-          console.log(error);
+          this.$swal("Ohh!", "Có gì đó sai, hãy thử lại!", "error");
         }
       }
     }
