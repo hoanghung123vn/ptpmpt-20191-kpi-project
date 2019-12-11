@@ -50,8 +50,10 @@ export default {
     methods:{
         async UpdateLevelDepartment(id)
         {
-        var levelName = String(document.getElementById("departmentLevelCodeUpdate").value);
-        var levelDescription = String(document.getElementById("departmentLevelDescriptionUpdate").value); 
+        // var levelName = String(document.getElementById("departmentLevelCodeUpdate").value);
+        // var levelDescription = String(document.getElementById("departmentLevelDescriptionUpdate").value);
+        var levelName = this.departmentLevel.levelName;
+        var levelDescription = this.departmentLevel.levelDescription;  
         await departmentService.updateLevelDepartment(id,levelName, levelDescription);
         alert("Cập nhật cấp bộ phận thành công");
         var levelResponse = await departmentService.getAllDepartmentLevel();

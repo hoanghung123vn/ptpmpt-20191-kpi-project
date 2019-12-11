@@ -276,4 +276,9 @@ export default class DepartmentService {
     });
   }
 
+  getDetailPosition(id)
+  {
+    return axios.get(`${apiBaseURL}/position/detailPosition?positionId=${id}`)
+  }
+
 }

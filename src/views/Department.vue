@@ -46,8 +46,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(level, index) in levelDatas" :key="level.id">
-                        <td class="text-center">{{ index + 1 }}</td>
+                    <tr v-for="level in levelDatas" :key="level.id">
+                        <td class="text-center">{{ level.id }}</td>
                         <td class="text-center">{{ level.levelName }}</td>
                         <td class="text-center">{{ level.levelDescription }}</td>
                         <td>
@@ -171,6 +171,7 @@
         <v-btn class="tablinks" v-on:click="openCity(event, 'departmentUser')">Cơ cấu bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'departmentPermission')">Bộ quyền của bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'position')">Phân quyền chức danh</v-btn>
+        <v-btn class="tablinks" v-on:click="openCity(event, 'comparePermission')">So sánh quyền</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'kpiEquation')">KPI bộ phận</v-btn>
         <v-btn class="tablinks" v-on:click="openCity(event, 'log')">Nhật ký hoạt động</v-btn>
     </div> 
@@ -390,6 +391,75 @@
             </template>
           </v-simple-table>
         </div>
+        <div id="comparePermission" class="tabcontent">
+           <v-select v-model="firstRoleId" :items="position" item-value="id"
+              item-text="positionName" style="width:100%; " label="Lựa chọn chức danh trong bộ phận"></v-select>
+          <p>Vui lòng lựa chọn bộ phận muốn so sánh và chức danh trong bộ phận đó</p>
+          <v-select @change="onClickChange();" v-model="secondRoleDepartment" :items="datas" item-value="id"
+              item-text="organizationName" style="width:100%;" label="Lựa chọn bộ phận muốn so sánh"></v-select>
+          <v-select id="secondRoleCompare"  v-model="secondRoleId" :items="secondPosition" item-value="id"
+              item-text="positionName" style="width:100%;" label="Lựa chọn chức danh thứ hai muốn so sánh"></v-select>            
+    
+            <v-col cols="12">
+              <v-btn v-on:click="comparePermission();" style="margin-top:10px;" type="button" color="primary" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                  <v-icon>mdi-magnify</v-icon>
+                  <span>So sánh</span>
+              </v-btn>
+            </v-col>
+            <br/>
+            <div id="div_container" style="display:none">
+            <p id="p_1" style="margin_left:15px; color:blue;"></p>
+              <div id="div_role_1">
+                 <v-simple-table style="width:100%;">
+                  <template>
+                    <thead>
+                    <tr>
+                        <th class="text-center">Mã quyền</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Ngày cập nhật</th>
+                        <th class="text-center">Tên quyền</th>
+                        <th class="text-center">Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(posRole) in firstRole" :key="posRole.groupId">
+                        <td class="text-center">{{ posRole.id}}</td>
+                        <td class="text-center">{{ new Date(posRole.createdDate).toLocaleDateString()}}</td>
+                        <td class="text-center">{{ new Date(posRole.lastUpdated).toLocaleDateString()}}</td>
+                        <td class="text-center">{{ posRole.name }}</td>
+                        <td class="text-center">{{ posRole.description}}</td>
+                    </tr>
+                </tbody>
+            </template>
+          </v-simple-table>
+              </div>
+              <p id="p_2" style="margin_left:15px; color:blue;"></p>
+              <div id="div_role_2">
+                <v-simple-table style="width:100%;">
+                  <template>
+                    <thead>
+                    <tr>
+                        <th class="text-center">Mã quyền</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Ngày cập nhật</th>
+                        <th class="text-center">Tên quyền</th>
+                        <th class="text-center">Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(posRole) in secondRole" :key="posRole.groupId">
+                        <td class="text-center">{{ posRole.id}}</td>
+                        <td class="text-center">{{ new Date(posRole.createdDate).toLocaleDateString()}}</td>
+                        <td class="text-center">{{ new Date(posRole.lastUpdated).toLocaleDateString()}}</td>
+                        <td class="text-center">{{ posRole.name }}</td>
+                        <td class="text-center">{{ posRole.description}}</td>
+                    </tr>
+                </tbody>
+            </template>
+          </v-simple-table>
+              </div>
+            </div>  
+        </div>
         <div id="kpiEquation" class="tabcontent">
             <div >
               <div>
@@ -604,7 +674,13 @@ export default {
       deleteModule: -1,
       selectPermissionRole: -1,
       selectPermission:-1,
-      kpi_quarter_year: 2019
+      kpi_quarter_year: 2019,
+      firstRoleId: -1,
+      secondRoleDepartment: -1,
+      secondRoleId: -1,
+      secondPosition: [],
+      firstRole:[],
+      secondRole:[],
     };
   },
   methods:{
@@ -878,6 +954,36 @@ export default {
     alert("Thêm quyền cho chức danh thành công");
     this.dialogPositionRole = false;
     this.positionRole();
+  },
+  async onClickChange()
+  {
+    var responseRole = await departmentService.positionDepartment(this.secondRoleDepartment);
+    this.secondPosition = responseRole.data;
+  },
+  
+  async comparePermission()
+  {
+    if(this.firstRoleId == -1 || this.secondRoleId == -1)
+    {
+      alert("Vui lòng lựa chọn đầy đủ thông tin");
+      return;
+    }
+    var firstDetailPos = await departmentService.getDetailPosition(this.firstRoleId);
+    var firstPosName = firstDetailPos.data["positionName"];
+    var firstDep = await departmentService.getDepartmentDetail(this.lastDetailId);
+    var firstDepName = firstDep.data["organizationName"];
+    document.getElementById("p_1").innerHTML = "Chi tiết quyền "+firstPosName+" - Bộ phận: "+firstDepName;
+    var secondDetailPos = await departmentService.getDetailPosition(this.firstRoleId);
+    var secondPosName = secondDetailPos.data["positionName"];
+    var secondDep = await departmentService.getDepartmentDetail(this.secondRoleDepartment);
+    var secondDepName = secondDep.data["organizationName"];
+    document.getElementById("p_2").innerHTML = "Chi tiết quyền"+secondPosName+" - Bộ phận: "+secondDepName;
+    document.getElementById("div_container").style.display = 'block';
+    var firstRes = await departmentService.positionRole(this.firstRoleId);
+    this.firstRole = firstRes.data;
+    var secondRes = await departmentService.positionRole(this.secondRoleId);
+    this.secondRole = secondRes.data;
+
   }
     
   },
