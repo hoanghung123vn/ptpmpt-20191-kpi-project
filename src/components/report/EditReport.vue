@@ -146,7 +146,8 @@ export default {
             this.user_name,
             this.project_id,
             this.project_type,
-            this.listDetail
+            this.listDetail,
+            this.report_name
           );
           this.$swal("Great!", "Chỉnh sửa thành công", "success");
           this.$router.push({ name: "reports" });
