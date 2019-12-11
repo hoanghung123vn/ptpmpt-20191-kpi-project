@@ -17,7 +17,7 @@ export default class ReportService {
     })
   }
 
-  addReport(user_id, user_name, project_id, project_type, listDetail) {
+  addReport(user_id, user_name, project_id, project_type, listDetail, report_name) {
     return axios({
       method: "POST",
       url: `${apiBaseURL}/template/postTemplate`,
@@ -26,7 +26,8 @@ export default class ReportService {
         project_type,
         user_id,
         project_id,
-        listDetail
+        listDetail,
+        report_name
       }
     });
   }
@@ -38,7 +39,7 @@ export default class ReportService {
     })
   }
 
-  editReport(id, user_id, user_name, project_id, project_type, listDetail) {
+  editReport(id, user_id, user_name, project_id, project_type, listDetail, report_name) {
     return axios({
       method: "PUT",
       url: `${apiBaseURL}/template/updateTemplate/${id}`,
@@ -47,7 +48,8 @@ export default class ReportService {
         project_type,
         user_id,
         project_id,
-        listDetail
+        listDetail,
+        report_name
       }
     });
   }
