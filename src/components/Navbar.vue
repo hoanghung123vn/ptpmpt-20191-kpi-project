@@ -81,7 +81,7 @@
                 <v-icon :color="active4">mdi-account-multiple-plus</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Thiết lập nhóm người dùng</v-list-item-title>
+                <v-list-item-title>Thiết lập nhóm quyền</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </router-link>
@@ -94,7 +94,7 @@
                 <v-icon :color="active5">mdi-shield-account</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Thiết lập quyền cho nhóm</v-list-item-title>
+                <v-list-item-title>Phân quyền tài nguyên cho nhóm</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </router-link>
@@ -228,7 +228,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
-      this.title = "Thiết lập nhóm người dùng";
+      this.title = "Thiết lập nhóm quyền";
     },
     changeto5() {
       this.active1 = "";
@@ -240,7 +240,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
-      this.title = "Thiết lập quyền cho nhóm";
+      this.title = "Phân quyền tài nguyên cho nhóm";
     },
     changeto6() {
       this.active1 = "";

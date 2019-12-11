@@ -27,8 +27,8 @@
 
 <script>
 import bus from "../bus";
-import AddSource from "../components/AddSource.vue";
-import DeleteSource from "../components/DeleteSource.vue";
+import AddSource from "../components/permission/AddSource.vue";
+import DeleteSource from "../components/permission/DeleteSource.vue";
 export default {
   name: "set-group-permission",
   components: {

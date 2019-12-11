@@ -18,9 +18,9 @@
 </template>
 
 <script>
-// import UserService from "../UserService";
-// const userService = new UserService();
-import bus from "../bus";
+import PermissionService from "../../PermissionService";
+const permissionService = new PermissionService();
+import bus from "../../bus";
 export default {
   name: "DeleteGroupUser",
   data() {
@@ -29,14 +29,13 @@ export default {
     };
   },
   props: {
-    id: Number
+    id: String
   },
   methods: {
-    //async deleteUser(id) {
-    deleteGroupUser() {
+    async deleteGroupUser() {
+      await permissionService.deleteRole(this.id);
       bus.$emit("deleteGroup", this.id);
       this.dialog = false;
-      ///await userService.deleteUser(id);
     }
   }
 };

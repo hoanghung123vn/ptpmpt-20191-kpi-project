@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-btn class="mb-4" color="success" @click="dialog = !dialog">Thêm nhóm mới</v-btn>
+    <v-btn class="mb-4" color="success" @click="dialog = !dialog">Thêm tài nguyên mới</v-btn>
     <v-dialog v-model="dialog" width="576px" persistent>
       <v-form v-model="valid" ref="form" lazy-validation>
         <v-card>
-          <v-card-title class="success">Tạo nhóm mới</v-card-title>
+          <v-card-title class="success">Tạo tài nguyên</v-card-title>
           <v-container>
             <v-row>
               <v-col cols="12">
@@ -26,9 +26,9 @@
 <script>
 // import UserService from "../UserService";
 // const userService = new UserService();
-import bus from "../bus";
+import bus from "../../bus";
 export default {
-  name: "AddGroup",
+  name: "AddSource",
   data() {
     return {
       dialog: false,
@@ -41,7 +41,7 @@ export default {
     addGroup() {
       if (this.$refs.form.validate()) {
         // const response = userService.addUser(user);
-        bus.$emit("addGroup", this.name);
+        bus.$emit("addSource", this.name);
         this.dialog = false;
         this.name = "";
       }

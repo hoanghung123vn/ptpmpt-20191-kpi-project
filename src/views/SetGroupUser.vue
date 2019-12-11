@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-toolbar-title class="mb-4">Danh sách nhóm người dùng</v-toolbar-title>
-    <AddGroup />
+    <v-toolbar-title class="mb-4">Danh sách nhóm quyền</v-toolbar-title>
+    <AddGroup :items="groups" />
     <v-simple-table>
       <template v-slot:default>
         <thead>
@@ -12,21 +12,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(group, index) in groups" :key="group.id">
+          <tr v-for="(group, index) in groups" :key="group._id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ group.name }}</td>
             <td class="text-center">
               <div class="d-flex justify-space-between">
                 <GroupUserDetail :group="group" />
-                <DeleteGroupUser :id="group.id" />
-                <v-container>
-                  <router-link
-                    :to="{name: 'set-group-permission-by-id', params: { groupId: group.id }, group: group}"
-                    class="side_bar_link"
-                  >
-                    <v-btn color="orange" dark rounded @click="refreshActive">Thiết lập</v-btn>
-                  </router-link>
-                </v-container>
+                <DeleteGroupUser :id="group._id" />
               </div>
             </td>
           </tr>
@@ -40,10 +32,13 @@
 </template>
 
 <script>
-import GroupUserDetail from "../components/GroupUserDetail.vue";
-import DeleteGroupUser from "../components/DeleteGroupUser.vue";
-import AddGroup from "../components/AddGroup.vue";
+import GroupUserDetail from "../components/permission/GroupUserDetail.vue";
+import DeleteGroupUser from "../components/permission/DeleteGroupUser.vue";
+import AddGroup from "../components/permission/AddGroup.vue";
 import bus from "../bus";
+import PermissionService from "../PermissionService";
+const permissionService = new PermissionService();
+
 export default {
   name: "set-group-user",
   components: {
@@ -53,51 +48,20 @@ export default {
   },
   data() {
     return {
-      groups: [
-        {
-          id: 0,
-          name: "Nhân viên",
-          sources: [
-            {
-              id: 0,
-              name: "Báo cáo"
-            },
-            {
-              id: 1,
-              name: "Tin nhắn"
-            }
-          ]
-        },
-        {
-          id: 1,
-          name: "Trưởng phòng",
-          sources: [
-            {
-              id: 0,
-              name: "Báo cáo"
-            },
-            {
-              id: 1,
-              name: "Tin nhắn"
-            }
-          ]
-        }
-      ],
+      groups: [],
       page: 1
     };
   },
+  async created() {
+    const response = await permissionService.getRoles();
+    this.groups = response.data;
+  },
   mounted() {
-    bus.$on("addGroup", name => {
-      const newGroup = {
-        id: this.groups.length,
-        name: name,
-        sources: []
-      };
-      this.groups.push(newGroup);
-      this.$swal("Great!", "Tạo mới thành công", "success");
+    bus.$on("addGroup", group => {
+      this.groups.push(group);
     });
     bus.$on("deleteGroup", id => {
-      this.groups = this.groups.filter(group => group.id !== id);
+      this.groups = this.groups.filter(group => group._id !== id);
       this.$swal("Great!", "Xóa thành công", "success");
     });
   },
