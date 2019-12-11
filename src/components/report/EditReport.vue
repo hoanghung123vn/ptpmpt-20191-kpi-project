@@ -57,32 +57,36 @@
             <v-col cols="12">
               <v-text-field
                 v-if="field.type === 'String'"
-                :label="field.field_name"
+                :label="field.field_name + ' (Kiểu văn bản)'"
                 type="text"
                 :required="field.importance === 1"
+                disabled
               />
               <v-text-field
                 v-if="field.type == 'Date'"
-                :label="field.field_name"
+                :label="field.field_name + ' (Kiểu ngày tháng)'"
                 type="date"
                 :required="field.importance === 1"
+                disabled
               />
               <v-text-field
                 v-if="field.type === 'Int' || field.type === 'Long'"
-                :label="field.field_name"
+                :label="field.field_name + ' (Kiểu số nguyên)'"
                 type="number"
                 :required="field.importance === 1"
                 min="0"
                 max="1000"
+                disabled
               />
               <v-text-field
                 v-if="field.type === 'Double' || field.type === 'Float'"
-                :label="field.field_name"
+                :label="field.field_name + ' (Kiểu số thực)'"
                 type="number"
                 :required="field.importance === 1"
                 step="0.01"
                 min="0"
                 max="1000"
+                disabled
               />
             </v-col>
           </v-row>

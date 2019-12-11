@@ -20,7 +20,7 @@
 <script>
 // import UserService from "../UserService";
 // const userService = new UserService();
-import bus from "../bus";
+import bus from "../../bus";
 export default {
   name: "DeleteSource",
   data() {
