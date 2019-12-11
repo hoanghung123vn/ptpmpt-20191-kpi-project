@@ -9,6 +9,10 @@ import TaskLabelManagement from '../views/TaskLabelManagement.vue'
 import ConfigurationKPIDepartment from '../views/ConfigurationKPIDepartment.vue'
 import ConfigurationKPIProject from '../views/ConfigurationKPIProject.vue'
 import ConfigurationKPIPositionInDepartment from '../views/ConfiguartionKPIPositionsDepartment.vue'
+import Reports from '../views/Reports.vue'
+import ReportDetail from '../components/report/ReportDetail'
+import AddReport from '../components/report/AddReport'
+import EditReport from '../components/report/EditReport'
 
 Vue.use(VueRouter)
 
@@ -58,6 +62,26 @@ const routes = [
     name: 'configpositionindepartment',
     component: ConfigurationKPIPositionInDepartment
   },
+  {
+    path: '/reports',
+    name: 'reports',
+    component: Reports
+  },
+  {
+    path: '/report-detail/:id',
+    name: 'report-detail',
+    component: ReportDetail
+  },
+  {
+    path: '/add-report',
+    name: 'add-report',
+    component: AddReport
+  },
+  {
+    path: '/edit-report/:id',
+    name: 'edit-report',
+    component: EditReport
+  }
 ]
 
 const router = new VueRouter({
