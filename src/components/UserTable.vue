@@ -49,7 +49,7 @@
       </template>
     </v-simple-table>
     <div class="text-center mt-5">
-      <v-pagination v-model="page" :length="6"></v-pagination>
+      <v-pagination v-model="page" :length="3"></v-pagination>
     </div>
     <AddUser />
   </v-container>
