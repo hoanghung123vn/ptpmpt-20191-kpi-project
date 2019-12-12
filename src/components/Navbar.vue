@@ -81,20 +81,17 @@
                 <v-icon :color="active4">mdi-account-multiple-plus</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Thiết lập nhóm người dùng</v-list-item-title>
+                <v-list-item-title>Thiết lập nhóm quyền</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </router-link>
-          <router-link
-            :to="{name: 'set-group-permission-by-id', params: {groupId: 0}}"
-            class="side_bar_link"
-          >
+          <router-link :to="{name: 'set-group-permission'}" class="side_bar_link">
             <v-list-item link class="ml-2" @click="changeto5">
               <v-list-item-action>
                 <v-icon :color="active5">mdi-shield-account</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Thiết lập quyền cho nhóm</v-list-item-title>
+                <v-list-item-title>Phân quyền cho tài nguyên</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </router-link>
@@ -228,7 +225,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
-      this.title = "Thiết lập nhóm người dùng";
+      this.title = "Thiết lập nhóm quyền";
     },
     changeto5() {
       this.active1 = "";
@@ -240,7 +237,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
-      this.title = "Thiết lập quyền cho nhóm";
+      this.title = "Phân quyền cho tài nguyên";
     },
     changeto6() {
       this.active1 = "";

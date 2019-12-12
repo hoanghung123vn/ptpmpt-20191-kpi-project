@@ -18,15 +18,15 @@
           <tr v-for="(report, index) in reports" :key="report._id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ report.user_name }}</td>
-            <td class="text-center">
+            <td>
               <router-link
                 :to="{name: 'report-detail', params: {id: report._id}}"
                 class="side_bar_link"
               >
                 <v-chip label color="info" text-color="white">
                   <v-icon left>mdi-file-document-box-outline</v-icon>
-                  {{ report.report_name }}
                 </v-chip>
+                {{ report.report_name }}
               </router-link>
             </td>
             <td class="text-center">
@@ -78,7 +78,7 @@ export default {
   },
   mounted() {
     bus.$on("deleteReport", id => {
-      this.reports = this.reports.filter(report => report.id !== id);
+      this.reports = this.reports.filter(report => report._id !== id);
       this.$swal("Great!", "Xóa thành công", "success");
     });
   }

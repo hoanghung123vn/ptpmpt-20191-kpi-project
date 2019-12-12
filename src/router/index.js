@@ -48,8 +48,8 @@ const routes = [
     component: SetGroupUser
   },
   {
-    path: '/set-group-permission/:groupId',
-    name: 'set-group-permission-by-id',
+    path: '/set-group-permission',
+    name: 'set-group-permission',
     component: SetGroupPermission
   },
   {

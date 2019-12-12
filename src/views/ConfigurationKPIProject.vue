@@ -9,7 +9,10 @@
     <v-col>
     </v-col>
     <v-col>
-        <SelectProject/>
+        <div>
+        <v-select @change="ProjectChange();" v-model="ProjectId" label="Lựa chọn dự án" :items="nameProject"
+          style="float: left;width:300px;"></v-select>
+      </div>
     </v-col>
     </v-row>
     <v-simple-table style="width:100%;">
@@ -33,11 +36,16 @@
                     <DeleteKPI :department="department" />
                     </div>
                     </td>
-                </tr>
+                </tr>   
             </tbody>
         </template>
     </v-simple-table>
-    <UpdateAllKPI :dataKPI=this.dataKPI />
+    <div class="block-1" v-if="bRet == true">
+      <UpdateAllKPIProject :dataKPI=this.dataKPI />
+    </div>
+    <div class="block-2" v-else-if="bRet == false">
+      <PostAllKPIProject :dataKPI=this.dataKPI />
+    </div>
     </v-container>
 </template>
 
@@ -74,13 +82,10 @@
 import EditKPI from "../components/EditKPI";
 import DeleteKPI from "../components/DeleteKPI";
 import AddKPI from "../components/AddKPI";
-import SelectProject from "../components/SelectProject";
-import UpdateAllKPI from "../components/UpdateAllKPI";
-
+import UpdateAllKPIProject from "../components/UpdateAllKPIProject";
+import PostAllKPIProject from "../components/PostAllKPIProject";
 import bus from "../bus";
 
-import Department from "../DepartmentService.js";
-const departmentService = new Department();
 
 import ConfigurationKPIService from "../ConfigurationKPIService.js";
 const configurationKPIService = new ConfigurationKPIService();
@@ -91,15 +96,22 @@ export default {
     EditKPI,
     DeleteKPI,
     AddKPI,
-    SelectProject,
-    UpdateAllKPI
+    UpdateAllKPIProject,
+    PostAllKPIProject
   },
   data() {
     return {
-      dataKPI: [],
-      criteriasKPI: [],
+      dataKPI: {
+        criterias: [],
+        id: "",
+      },
+      bRet: true,
+      //arrCriterias: [],
       datas: [],
       levelDatas:[],
+      ProjectId : "",
+      nameProject: [],
+      listProject: [],
       dialogdetail: false,
       dialogupdate: false,
       dialogdelete: false
@@ -108,38 +120,83 @@ export default {
   mounted() {   
      bus.$on("addKPI", department => {
       const newdepartment = department;
+      //this.arrCriterias.push(newdepartment);
       this.dataKPI.criterias.push(newdepartment);
-      this.$swal("Great!", "Tạo mới thành công", "success");
+      //this.dataKPI.criterias = this.arrCriterias;
+      alert("Bạn đã thêm mới tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
+      //this.$swal("Great!", "Tạo mới thành công", "success");
     });
     bus.$on("deleteKPI", name => {
+      //this.arrCriterias = this.arrCriterias.filter(department => department.name !== name);
+      alert("Bạn đã xóa tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       this.dataKPI.criterias = this.dataKPI.criterias.filter(department => department.name !== name);
-      this.$swal("Great!", "Xóa thành công", "success");
+      //this.$swal("Great!", "Xóa thành công", "success");
     });
     bus.$on("updateKPI", department => {
       const index = this.dataKPI.criterias.findIndex(kpi => kpi.name === department.name);
       this.dataKPI.criterias.splice(index, 1, department);
-      this.$swal("Great!", "Cập nhật thành công", "success");
+      alert("Bạn đã thay đổi tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
+      //const index2 = this.arrCriterias.findIndex(kpi => kpi.name === department.name);
+      //this.arrCriterias.splice(index2, 1, department);
+
+      //this.$swal("Great!", "Cập nhật thành công", "success");
     });
-    bus.$on("updateAllKPI", dataKPI => {
-      this.dataKPI = dataKPI;
-      this.$swal("Great!", "Cập nhật thành công", "success");
-    });
+    if(this.bRet == true){
+      //console.log("test1");
+      bus.$on("updateAllKPIProject", dataKPI => {
+        this.dataKPI = dataKPI;
+      
+        this.$swal("Great!", "Cập nhật thành công", "success");
+      });
+    }
+    else{
+      bus.$on("postAllKPIProject", dataKPI => {
+        this.dataKPI = dataKPI;
+        this.$swal("Great!", "Cập nhật thành công", "success");
+      });
+      
+    }
+    
   },
-  async created()
-  {
-    //eda3b9b1-ce95-47f7-91ec-e03d1eb2bc4d, 1664a77a-9c82-46af-83fe-b05b5e2e4bf8
-    var response = await configurationKPIService.getKPIProjectById("eda3b9b1-ce95-47f7-91ec-e03d1eb2bc4d");
-    this.dataKPI = response.data;
+  async created() {
+    var response = await configurationKPIService.getlistProject();
+      this.listProject = response.data.results;
 
-    this.criteriasKPI =  this.dataKPI.criterias
-
-    var responseDepartment = await departmentService.getAllDepartment();
-    this.datas = responseDepartment.data;
-
-    var levelResponse = await departmentService.getAllDepartmentLevel();
-    this.levelDatas = levelResponse.data;
+      for (var i = 0; i < this.listProject.length; i++) {
+        this.nameProject.push(this.listProject[i].name);
+      }
   },
 
-  
+  methods:{
+    async getKPIProject(id){
+      try {
+        var response = await configurationKPIService.getKPIProjectById(id);
+        this.dataKPI = response.data;
+        this.bRet = true;
+      } catch (error) {
+        //const message = error;
+        alert("Dự án này chưa được cấu hình KPI");
+        //this.$swal("Đã có lỗi xảy ra!", `${message}`);
+        this.setKPIProject(id);
+      }
+     //eda3b9b1-ce95-47f7-91ec-e03d1eb2bc4d, 1664a77a-9c82-46af-83fe-b05b5e2e4bf8
+      
+    },
+
+    async setKPIProject(id){
+      this.dataKPI.id = id;
+      this.dataKPI.criterias = "";
+      this.bRet = false;
+    },
+
+    async ProjectChange() {
+
+      const found = this.nameProject.findIndex(element => element === this.ProjectId);
+      const idProject = this.listProject[found].id;
+      //console.log(idProject);
+      this.getKPIProject(idProject);
+    }
+     
+  }
 };
 </script>

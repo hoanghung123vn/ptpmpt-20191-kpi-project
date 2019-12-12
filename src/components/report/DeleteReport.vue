@@ -39,6 +39,7 @@ export default {
         this.dialog = false;
       } catch (error) {
         this.$swal("Ohh", "Có gì đó sai, hãy thử lại!", "error");
+        this.dialog = false;
       }
     }
   }
