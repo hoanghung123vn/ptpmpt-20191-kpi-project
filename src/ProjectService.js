@@ -3,6 +3,7 @@ import axios from "axios";
 const apiBaseURL = "http://3.1.20.54";
 
 export default class ReportService {
+ 
   getProjectTypes() {
     return axios({
       method: "GET",

@@ -1,9 +1,13 @@
 import axios from "axios";
 
 const apiBaseURL = "http://18.217.21.235:8083/api/v1/";
-const apiGroup5 = "https://dsd05-dot-my-test-project-252009.appspot.com/";
+//const apiGroup5 = "https://dsd05-dot-my-test-project-252009.appspot.com/";
+const apiGroup5 = "https://quang-dot-my-test-project-252009.appspot.com/";
+//var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjVkZWI0ZDlhMjNiYzUyMDAxNzgzNzI3YiIsInVzZXJJZCI6IjQ2MTQ3MTgyMTU5NDYyNDAiLCJ1c2VybmFtZSI6ImhvYW5nbGhAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpZLlQwcDZMby5RYVZCNjZPSWdlZWdOYno5eDZqTktYcERtOHVDSDJNOVoxa2F5SDNrZFMiLCJuYW1lIjoiTMOqIEh1eSBIb8OgbmciLCJwaG9uZU51bWJlciI6IjA5ODEzNjY2MSIsIl9fdiI6MH0sImlhdCI6MTU3NjE0ODYwNywiZXhwIjoxNTc4NzQwNjA3fQ.PON0GQHMyvgIryCNgUEpLiRJ_r_An-W44Tdbz28yt_s"
 
 export default class DepartmentService {
+  authToken= "";
+
   getAllDepartment() {
     return axios(`${apiBaseURL}/organizationalStructure/listOrganization`);
   }
@@ -74,9 +78,11 @@ export default class DepartmentService {
       params: {
         listGroupId: listGroup
       },
-      url: `https://dsd05-dot-my-test-project-252009.appspot.com/permission/getMultiGroupPermissions`,
+      //url: `https://dsd05-dot-my-test-project-252009.appspot.com/permission/getMultiGroupPermissions`,
+      url:`${apiGroup5}/permission/getMultiGroupPermissions`,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.authToken}`
       }
     });
   }
@@ -129,7 +135,13 @@ export default class DepartmentService {
 
   getDepartmentPermission(id)
   {
-    return axios(`${apiGroup5}/permission/getDepartmentPermissions?departmentId=${id}`);
+    return axios(`${apiGroup5}/permission/getDepartmentPermissions?departmentId=${id}`,
+    {
+      headers:
+      {
+        "Authorization": `Bearer ${this.authToken}`
+      }
+    });
   }
 
   createPosition(name, departmentId, levelId)
@@ -207,12 +219,24 @@ export default class DepartmentService {
 
   getAllModule()
   {
-    return axios(`${apiGroup5}/permission/getAllModules`);
+    return axios(`${apiGroup5}/permission/getAllModules`,
+    {
+      headers:
+      {
+        "Authorization": `Bearer ${this.authToken}`
+      }
+    });
   }
 
   getDepartmentModule(id)
   {
-    return axios(`${apiGroup5}/permission/getDepartmentModules?departmentId=${id}`);
+    return axios(`${apiGroup5}/permission/getDepartmentModules?departmentId=${id}`,
+    {
+      headers:
+      {
+        "Authorization": `Bearer ${this.authToken}`
+      }
+    });
     
   }
 
@@ -226,7 +250,8 @@ export default class DepartmentService {
       },
       url: `${apiGroup5}/permission/addModuleDepartment`,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.authToken}`
       }
     });
   }
@@ -241,13 +266,15 @@ export default class DepartmentService {
       },
       url: `${apiGroup5}/permission/removeModuleDepartment`,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.authToken}`
       }
     });
   }
 
   addRolePermission(permissionId, roleId)
   {
+    
     return axios({
       method: "post",
       data: {
@@ -256,13 +283,15 @@ export default class DepartmentService {
       },
       url: `${apiGroup5}/permission/addGroupPermission`,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.authToken}`
       }
     });
   }
 
   deleteRolePermission(id, roleId)
   {
+   
     return axios({
       method: "post",
       data: {
@@ -271,7 +300,8 @@ export default class DepartmentService {
       },
       url: `${apiGroup5}/permission/removeGroupPermission`,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.authToken}`
       }
     });
   }

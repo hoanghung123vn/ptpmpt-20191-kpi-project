@@ -757,6 +757,11 @@ export default {
     },
     async detail(id, levelId)
     {
+      document.getElementById("departmentUser").style.display = 'none';
+      document.getElementById("departmentPermission").style.display = 'none';
+      document.getElementById("position").style.display = 'none';
+      document.getElementById("comparePermission").style.display = 'none';
+      document.getElementById("kpiEquation").style.display = 'none';
       this.lastDetailId = id;
       this.levelId = levelId;
       alert("Dữ liệu chi tiết được nạp vào tab con bên dưới");
@@ -927,6 +932,8 @@ export default {
       await departmentService.addDepartmentModule(this.selectedModule, this.lastDetailId);
       alert("Thêm quyền thành công !");
       this.getDepartmentPermission(this.lastDetailId);
+      var dModule = await departmentService.getDepartmentModule(this.lastDetailId);
+      this.departmentModule = dModule.data;
       this.dialogDepartmentRule =false;
     },
 
@@ -940,6 +947,9 @@ export default {
       await departmentService.deleteDepartmentModule(this.deleteModule, this.lastDetailId);
       alert("Xóa quyền thành công");
       this.getDepartmentPermission(this.lastDetailId);
+      var dModule = await departmentService.getDepartmentModule(this.lastDetailId);
+      // console.log(dModule.data);
+      this.departmentModule = dModule.data;
       this.dialogDeleteDepartmentRule = false;
     },
 
@@ -984,11 +994,14 @@ export default {
     var secondRes = await departmentService.positionRole(this.secondRoleId);
     this.secondRole = secondRes.data;
 
-  }
+  },
+
     
   },
   async created()
   {
+    var authTokenStr = localStorage.getItem("auth");
+    departmentService.authToken = authTokenStr;
     var response = await departmentService.getAllDepartment();
     this.datas = response.data;
     
@@ -1001,6 +1014,9 @@ export default {
     var allModuleRes = await departmentService.getAllModule();
     // console.log(allModuleRes.data);
     this.allModule = allModuleRes.data;
+    
+
+
   },
 
   

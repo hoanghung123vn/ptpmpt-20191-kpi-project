@@ -35,6 +35,8 @@ export default {
     methods:{
         async deletePermissionForRole(id,groupId)
         {
+            var authTokenStr = localStorage.getItem("auth");
+            departmentService.authToken = authTokenStr;
             await departmentService.deleteRolePermission(id, groupId);
             alert("Xóa quyền thành công");
             this.dialogdeleterole = false;
