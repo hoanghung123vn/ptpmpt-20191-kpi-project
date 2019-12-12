@@ -2,11 +2,11 @@
   <v-row justify-center>
     <v-dialog v-model="dialogdelete" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="warning" dark v-on="on" rounded>Khóa</v-btn>
+        <v-btn color="warning" dark v-on="on" rounded :disabled="user.statusId === 1">Khóa</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Xóa tài khoản?</v-card-title>
-        <v-card-text>Bạn có chắc chắn muốn xóa, thao tác này sẽ không thể quay lại</v-card-text>
+        <v-card-title class="headline">Khóa tài khoản?</v-card-title>
+        <v-card-text>Bạn có chắc chắn muốn khóa, thao tác này sẽ không thể quay lại</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="deleteUser">Đồng ý</v-btn>
