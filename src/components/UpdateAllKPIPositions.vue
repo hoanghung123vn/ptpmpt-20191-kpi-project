@@ -26,7 +26,7 @@ export default {
   methods: {
     async updateAllKPIPositions() {
       try {
-        const response = await configurationKPIService.updateAllKPIPositions(
+        const response = await configurationKPIService.updateallPositionsKPI(
           this.dataKPI.criterias,
           this.dataKPI.id
         );

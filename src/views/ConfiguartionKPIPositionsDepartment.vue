@@ -35,7 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="department in dataKPI.criterias" :key="department.name">
+                <tr v-for="department in dataKPI.criterias" :key="department.id">
                     <td class="text-center">{{ department.name }}</td>
                     <td class="text-center">{{ department.ratio }}</td>                   
                     <td class="text-center">{{ department.note }}</td> 
@@ -91,7 +91,11 @@ export default {
   },
   data() {
     return {
-      dataKPI: [],
+      dataKPI: {
+        criterias: [],
+        id: "",
+      },
+      arrCriterias: [],
       DepartmentId : "",
       idDepartment : "",
       PositionsId: "",
@@ -106,19 +110,26 @@ export default {
     
     bus.$on("addKPI", department => {
       const newdepartment = department;
-      this.dataKPI.criterias.push(newdepartment);
+            newdepartment.id = this.dataKPI.criterias.length + 1;
+      this.arrCriterias.push(newdepartment);
+      this.dataKPI.criterias = this.arrCriterias;
+      //this.dataKPI.criterias.push(newdepartment);
       alert("Bạn đã thêm mới tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       //this.$swal("Great!", "Tạo mới thành công", "success");
     });
     bus.$on("deleteKPI", name => {
+       this.arrCriterias = this.arrCriterias.filter(department => department.name !== name);
       this.dataKPI.criterias = this.dataKPI.criterias.filter(department => department.name !== name);
       alert("Bạn đã xóa tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       //this.$swal("Great!", "Xóa thành công", "success");
     });
     bus.$on("updateKPI", department => {
-      const index = this.dataKPI.criterias.findIndex(kpi => kpi.name === department.name);
-      alert("Bạn đã thay đổi tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
+      const index = this.dataKPI.criterias.findIndex(kpi => kpi.id === department.id);
+      
       this.dataKPI.criterias.splice(index, 1, department);
+      const index2 = this.arrCriterias.findIndex(kpi => kpi.id === department.id);
+      this.arrCriterias.splice(index2, 1, department);
+       alert("Bạn đã thay đổi tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       //this.$swal("Great!", "Cập nhật thành công", "success");
     });
     bus.$on("updateAllKPIPositions", dataKPI => {
@@ -136,8 +147,22 @@ export default {
   methods:{
    async getKPIPositions(idDepartment, idEmployee){
       try {
+        this.dataKPI.criterias = [];
+        this.dataKPI.id = "";
         var response = await configurationKPIService.getKPIPositionsInDepartment(idDepartment,idEmployee);
-        this.dataKPI = response.data;
+         let data=[]
+          response.data.criterias.map(async(value,index)=>{
+            let ob={
+              id:index+1,
+              name: value.name,
+              note:value.note,
+              ratio: value.ratio
+          }
+         await data.push(ob)
+        })
+        this.dataKPI.criterias = await data;
+        this.arrCriterias = this.dataKPI.criterias;
+        this.dataKPI.id = response.data.id;
       } catch (error) {
         //const message = error;
         alert("Chức vụ này chưa được cấu hình KPI");
@@ -159,7 +184,6 @@ export default {
         var responsePositions = await configurationKPIService.getlistEmployeeByDepartmentID(idDepartment);
         this.listPositions = responsePositions.data.department.positions;
         for (var i = 0; i < this.listPositions.length; i++) {
-          //console.log(this.listPositions[i].name);
           this.namePositions.push(this.listPositions[i].name);
         }
       }
@@ -170,13 +194,11 @@ export default {
         for (var i = 0; i < this.listPositions.length; i++) {
           if(this.listPositions[i].name == "Nhân viên") {
             this.listIdEmployee.push(this.listPositions[i].employee_id);
-            console.log(this.listPositions[i].employee_id);     
           }
         }
       }
       const found = this.namePositions.findIndex(element => element === this.PositionsId);
       const employee_id = this.listPositions[found].employee_id;
-      console.log(employee_id);
       this.getKPIPositions(this.idDepartment,employee_id);
       
     }

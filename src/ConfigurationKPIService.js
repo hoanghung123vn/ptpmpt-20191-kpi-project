@@ -11,8 +11,6 @@ const apiupdateallDepartmentKPI = "https://dsd05-dot-my-test-project-252009.apps
 const apiupdateallProjectKPI = "https://dsd05-dot-my-test-project-252009.appspot.com/configKPI/configKPIProject"; // nhóm 5 quản lí
 const apiupdateallPositionsKPI = "https://dsd05-dot-my-test-project-252009.appspot.com/configKPI/configKPIJobPosition"; // nhóm 5 quản lí
 
-const apipostKPIProjectURL = "http://206.189.34.124:5000/api/group8/kpis?project_id="; // nhóm 8 quản lí
-
 const apigetallemployeeindepartment = "http://206.189.34.124:5000/api/group8/departments/"; // nhóm 8 quản lí
 
 //const fixapikpipositons = "http://206.189.34.124:5000/api/group8/kpis?department_id=1&employee_id=5dc42a0dc6b2090017e89d4f"; // nhóm 8 quản lí
@@ -51,13 +49,26 @@ export default class ConfigurationKPIService {
   postKPIProject(criterias,project_id) {
     return axios({
     method: "POST",
-    url: `${apipostKPIProjectURL}${project_id}`,
+    url: `${apiKPIProjectURL}${project_id}`,
     data: {
       department_id: null,
       type: "PROJECT",
       employee_id: null,
       criterias,
       project_id
+      }
+    });
+  }
+  postKPIDepartment(criterias,department_Id) {
+    return axios({
+    method: "POST",
+    url: `${apiKPIDepartmentURL}${department_Id}`,
+    data: {
+      department_Id,
+      type: "DEPARTMENT",
+      employee_id: null,
+      criterias,
+      project_id: null
       }
     });
   }
@@ -72,7 +83,6 @@ export default class ConfigurationKPIService {
     });
   }
   updateallPositionsKPI(criterias, id) {
-    // console.log(criterias);
     return axios({
       method: "POST",
       url: `${apiupdateallPositionsKPI}`,

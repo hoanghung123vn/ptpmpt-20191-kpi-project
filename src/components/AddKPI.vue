@@ -8,13 +8,13 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field placeholder="Tên tiêu chí" v-model="department.name" required :rules="nameRules" />
+                <v-text-field placeholder="Tên tiêu chí" v-model="name" required :rules="nameRules" />
               </v-col>
               <v-col cols="12">
-                <v-text-field placeholder="Tỉ lệ" v-model="department.ratio" required :rules="ratioRules" />
+                <v-text-field placeholder="Tỉ lệ" v-model="ratio" required :rules="ratioRules" />
               </v-col>
               <v-col cols="12">
-                <v-text-field placeholder="Chú thích" v-model="department.note" />
+                <v-text-field placeholder="Chú thích" v-model="note" />
               </v-col>
             </v-row>
           </v-container>
@@ -40,12 +40,11 @@ export default {
     return {
       valid: true,
       dialog: false,
-      department: {
-        name: "",
-        ratio: "",
-        note: ""      
-      },     
-      
+      name: "",
+      ratio: "",
+      note: "",
+      id: "",
+      tieuchi: Object,
       nameRules: [v => !!v || "Name is required"],
       ratioRules: [v => !!v || "Ratio is required"],
     };
@@ -53,14 +52,25 @@ export default {
   methods: {
     addKPI() {
       if (this.$refs.form.validate()) {
-        bus.$emit("addKPI", this.department);
-        this.department = {
-          name: "",
-          ratio: "",
-          note: ""   
-        };     
+        this.getObjectDer();
+        bus.$emit("addKPI", this.tieuchi);
         this.dialog = false;
+        this.setDataObjectDer();
       }
+    },
+    async getObjectDer(){
+       this.tieuchi = {
+        id: this.id,
+        name: this.name,
+        ratio : this.ratio,
+        note: this.note
+      }
+    },
+    async setDataObjectDer(){
+      this.name = "",
+      this.ratio = "",
+      this.note = "",
+      this.id = ""
     }
   }
 };
