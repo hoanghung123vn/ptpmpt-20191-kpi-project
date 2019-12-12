@@ -32,7 +32,8 @@
           </v-row>
           <v-row class="ml-5">
             <v-col cols="12">
-              <div class="subtitle-1">Trạng thái: {{user.statusId}}</div>
+              <div class="subtitle-1" v-if="user.statusId === 0">Trạng thái: Hoạt động</div>
+              <div class="subtitle-1" v-if="user.statusId === 1">Trạng thái: Đã khóa</div>
             </v-col>
           </v-row>
           <v-row class="ml-5">

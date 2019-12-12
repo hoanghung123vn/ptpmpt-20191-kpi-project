@@ -19,9 +19,6 @@
                   <v-text-field label="Email" required v-model="user.email" :rules="requiredRule"></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field label="Mật khẩu*" type="password" required :rules="requiredRule"></v-text-field>
-                </v-col>
-                <v-col cols="12">
                   <v-text-field
                     label="Số điện thoại*"
                     required
@@ -47,15 +44,6 @@
                   <v-row justify="center" v-if="open" required @click="open=!open">
                     <v-date-picker v-model="picker"></v-date-picker>
                   </v-row>
-                </v-col>
-                <v-col cols="12">
-                  <v-select
-                    :items="[0, 1, 2, 3]"
-                    label="Trạng thái*"
-                    required
-                    v-model="user.statusId"
-                    :rules="requiredRule"
-                  ></v-select>
                 </v-col>
               </v-row>
             </v-container>
