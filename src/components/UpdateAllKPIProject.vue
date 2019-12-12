@@ -26,7 +26,7 @@ export default {
   methods: {
     async updateAllKPIProject() {
       try {
-          const response = await configurationKPIService.updateAllKPIProject(
+        const response = await configurationKPIService.updateAllKPIProject(
           this.dataKPI.criterias,
           this.dataKPI.id
         );
@@ -37,9 +37,8 @@ export default {
           bus.$emit("updateAllKPIProject", this.dataKPI);
           this.dialogupdate = false;
           this.$swal("Great!", "Cập nhật thành công", "success");
-        } 
-        else {
-          console.log("test1");
+        } else {
+          // console.log("test1");
           const message = response.data.message;
           this.dialogupdate = false;
           //alert("Đã có lỗi xảy ra!", `${message}`);
