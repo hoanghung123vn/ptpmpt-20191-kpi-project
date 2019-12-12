@@ -78,7 +78,7 @@ export default {
   },
   mounted() {
     bus.$on("deleteReport", id => {
-      this.reports = this.reports.filter(report => report.id !== id);
+      this.reports = this.reports.filter(report => report._id !== id);
       this.$swal("Great!", "Xóa thành công", "success");
     });
   }

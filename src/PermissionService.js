@@ -27,4 +27,29 @@ export default class PermissionService {
       }
     })
   }
+
+  getLinks() {
+    return axios({
+      method: "GET",
+      url: `${apiBaseUrl}/links`
+    })
+  }
+
+  getLinkDetail(id) {
+    return axios({
+      method: "GET",
+      url: `${apiBaseUrl}/links/${id}`
+    })
+  }
+
+  setRole(link_id, role_id) {
+    return axios({
+      method: "POST",
+      url: `${apiBaseUrl}/links/add-role`,
+      data: {
+        link_id,
+        role_id
+      }
+    })
+  }
 }
