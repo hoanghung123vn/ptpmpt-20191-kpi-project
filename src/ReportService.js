@@ -60,4 +60,28 @@ export default class ReportService {
       url: `${apiBaseURL}/template/deleteTemplate/${id}`
     });
   }
+
+  addField(field_name, type, project_type, importance, level) {
+    return axios({
+      method: "POST",
+      url: `${apiBaseURL}/report/postField`,
+      data: {
+        field_name, type, project_type, importance, level
+      }
+    })
+  }
+
+  editField(id, field) {
+    return axios({
+      method: "PUT",
+      url: `${apiBaseURL}/report/updateField/${id}`,
+      data: {
+        field_name: field.field_name,
+        type: field.type,
+        project_type: field.project_type,
+        importance: field.importance,
+        level: field.level
+      }
+    })
+  }
 }

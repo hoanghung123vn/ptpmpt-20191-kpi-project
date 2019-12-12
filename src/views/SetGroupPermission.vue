@@ -17,7 +17,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(link, index) in links" :key="link._id">
+                <tr v-for="(link, index) in link_paginate" :key="link._id">
                   <td class="text-center">{{ index + 1 }}</td>
                   <td>"{{ link.url }}"</td>
                   <td class="text-center">
@@ -30,6 +30,9 @@
               </tbody>
             </template>
           </v-simple-table>
+          <div class="text-center mt-5">
+            <v-pagination v-model="page" :length="len" @input="paginate"></v-pagination>
+          </div>
         </v-container>
       </v-tab-item>
     </v-tabs>
@@ -46,7 +49,11 @@ export default {
   name: "set-group-permission",
   data() {
     return {
-      links: []
+      links: [],
+      link_paginate: [],
+      page: 1,
+      num: 15,
+      len: 1
     };
   },
   components: {
@@ -56,6 +63,22 @@ export default {
   async created() {
     const response = await permissionService.getLinks();
     this.links = response.data;
+    this.len = Math.ceil(this.links.length / this.num);
+    for (let i = 0; i < this.links.length && i < this.num; i++) {
+      this.link_paginate.push(this.links[i]);
+    }
+  },
+  methods: {
+    paginate() {
+      this.link_paginate = [];
+      for (
+        let i = (this.page - 1) * this.num;
+        i < this.links.length && i < this.page * this.num;
+        i++
+      ) {
+        this.link_paginate.push(this.links[i]);
+      }
+    }
   },
   mounted() {
     // bus.$on("addSource", name => {

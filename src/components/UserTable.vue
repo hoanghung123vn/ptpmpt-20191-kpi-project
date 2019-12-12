@@ -1,20 +1,11 @@
 <template>
   <v-container>
     <v-row class="hidden-sm-and-down">
-      <v-col>
+      <v-col cols="10">
         <v-text-field label="Tìm kiếm" single-line outlined append-icon="mdi-magnify"></v-text-field>
       </v-col>
-      <v-col>
+      <v-col cols="2">
         <v-btn class color="primary" x-large>Tìm kiếm</v-btn>
-      </v-col>
-      <v-col>
-        <v-overflow-btn
-          :items="department"
-          label="Lọc theo bộ phận"
-          target="#dropdown-example"
-          outlined
-          background-color="blue lighten-3"
-        ></v-overflow-btn>
       </v-col>
     </v-row>
     <v-simple-table>
@@ -28,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in users" :key="user.id">
+          <tr v-for="(user, index) in user_paginate" :key="user.id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ user.name }}</td>
             <td class="text-center">
@@ -49,7 +40,7 @@
       </template>
     </v-simple-table>
     <div class="text-center mt-5">
-      <v-pagination v-model="page" :length="3"></v-pagination>
+      <v-pagination v-model="page" :length="len" @input="paginate"></v-pagination>
     </div>
     <AddUser />
   </v-container>
@@ -74,12 +65,10 @@ export default {
   data() {
     return {
       users: [],
-      department: [
-        "Phòng nhân sự",
-        "Phòng kinh doanh",
-        "Bộ phận hỗ trợ - hậu cần"
-      ],
-      page: 1
+      page: 1,
+      user_paginate: [],
+      num: 15,
+      len: 1
     };
   },
   mounted() {
@@ -101,12 +90,25 @@ export default {
       this.$swal("Great!", "Cập nhật thành công", "success");
     });
   },
+  methods: {
+    paginate() {
+      this.user_paginate = [];
+      for (
+        let i = (this.page - 1) * this.num;
+        i < this.users.length && i < this.page * this.num;
+        i++
+      ) {
+        this.user_paginate.push(this.users[i]);
+      }
+    }
+  },
   async created() {
-    //created() {
-    //console.log(this.$router.app._route.fullPath);
     const response = await userService.getAllUser();
     this.users = response.data;
-
+    this.len = Math.ceil(this.users.length / this.num);
+    for (let i = 0; i < this.users.length && i < this.num; i++) {
+      this.user_paginate.push(this.users[i]);
+    }
     // this.users = [
     //   {
     //     id: "321321321",

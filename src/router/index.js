@@ -13,6 +13,7 @@ import Reports from '../views/Reports.vue'
 import ReportDetail from '../components/report/ReportDetail'
 import AddReport from '../components/report/AddReport'
 import EditReport from '../components/report/EditReport'
+import ReportFields from '../views/ReportFields'
 
 Vue.use(VueRouter)
 
@@ -81,6 +82,11 @@ const routes = [
     path: '/edit-report/:id',
     name: 'edit-report',
     component: EditReport
+  },
+  {
+    path: '/report-fields',
+    name: 'report-fields',
+    component: ReportFields
   }
 ]
 

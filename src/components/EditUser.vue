@@ -45,6 +45,15 @@
                     <v-date-picker v-model="picker"></v-date-picker>
                   </v-row>
                 </v-col>
+                <v-col cols="12">
+                  <v-select
+                    :items="items"
+                    v-model="user.statusId"
+                    item-text="name"
+                    item-value="value"
+                    label="Trạng thái"
+                  ></v-select>
+                </v-col>
               </v-row>
             </v-container>
             <small>*chỉ ra các trường bắt buộc</small>
@@ -72,7 +81,8 @@ export default {
       dialogupdate: false,
       picker: new Date(this.user.birthday).toISOString().substr(0, 10),
       open: false,
-      requiredRule: [v => !!v || "The field is required!!!"]
+      requiredRule: [v => !!v || "The field is required!!!"],
+      items: [{ name: "Hoạt động", value: 0 }, { name: "Đã khóa", value: 1 }]
     };
   },
   props: {

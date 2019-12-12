@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(label, index) in labels" :key="label._id">
+          <tr v-for="(label, index) in label_paginate" :key="label._id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">
               <v-chip label :color="label.color" text-color="white">
@@ -31,7 +31,7 @@
       </template>
     </v-simple-table>
     <div class="text-center mt-5">
-      <v-pagination v-model="page" :length="3"></v-pagination>
+      <v-pagination v-model="page" :length="len" @input="paginate"></v-pagination>
     </div>
   </v-container>
 </template>
@@ -53,13 +53,20 @@ export default {
   data() {
     return {
       labels: [],
-      page: 1
+      label_paginate: [],
+      page: 1,
+      num: 15,
+      len: 1
     };
   },
   async created() {
     try {
       const response = await labelService.getLabels();
       this.labels = response.data;
+      this.len = Math.ceil(this.labels.length / this.num);
+      for (let i = 0; i < this.labels.length && i < this.num; i++) {
+        this.label_paginate.push(this.labels[i]);
+      }
     } catch (error) {
       this.$swal("Ohh!", "Có gì đó sai, hãy tải lại trang", "error");
     }
@@ -78,6 +85,18 @@ export default {
       this.labels.splice(index, 1, label);
       this.$swal("Great!", "Cập nhật thành công", "success");
     });
+  },
+  methods: {
+    paginate() {
+      this.label_paginate = [];
+      for (
+        let i = (this.page - 1) * this.num;
+        i < this.labels.length && i < this.page * this.num;
+        i++
+      ) {
+        this.label_paginate.push(this.labels[i]);
+      }
+    }
   }
 };
 </script>
