@@ -53,7 +53,6 @@ export default {
   methods: {
     updateKPI() {
       if (this.$refs.form.validate()) {   
-        //console.log("validate");
         bus.$emit("updateKPI", this.department);
         this.dialogupdate = false;
       }
