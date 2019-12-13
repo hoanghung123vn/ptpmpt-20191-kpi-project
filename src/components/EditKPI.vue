@@ -13,13 +13,13 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <v-text-field label="Tên*" required v-model="department.name" :rules="requiredRule"></v-text-field>
+                  <v-text-field label="Tên*" required v-model="name" :rules="nameRules"></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field label="Tỉ lệ" required v-model="department.ratio" :rules="requiredRule"></v-text-field>
+                  <v-text-field label="Tỉ lệ" required v-model="ratio" :rules="ratioRules"></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field label="Chú thích" required v-model="department.note"></v-text-field>
+                  <v-text-field label="Chú thích" required v-model="note"></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -42,9 +42,15 @@ export default {
   name: "EditKPI",
   data() {
     return {
-      valid: false,
+      valid: true,
       dialogupdate: false,
-      requiredRule: [v => !!v || "The field is required!!!"]
+      nameRules: [v => !!v || "Name is required"],
+      ratioRules: [v => !!v || "Ratio is required"],
+      name: this.department.name,
+      ratio: this.department.ratio,
+      note: this.department.note,
+      id: this.department.id,
+      tieuchi: Object
     };
   },
    props: {
@@ -52,11 +58,20 @@ export default {
   },
   methods: {
     updateKPI() {
-      if (this.$refs.form.validate()) {   
-        bus.$emit("updateKPI", this.department);
+      if (this.$refs.form.validate()) { 
+        this.getObjectDer();
+        bus.$emit("updateKPI", this.tieuchi);
         this.dialogupdate = false;
       }
-      
+    },
+    async getObjectDer()
+    {
+       this.tieuchi = {
+        id: this.id,
+        name: this.name,
+        ratio : this.ratio,
+        note: this.note
+      }
     }
   }
 };
