@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(report, index) in reports" :key="report._id">
+          <tr v-for="(report, index) in report_paginate" :key="report._id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ report.user_name }}</td>
             <td>
@@ -47,7 +47,7 @@
       </template>
     </v-simple-table>
     <div class="text-center mt-5">
-      <v-pagination v-model="page" :length="3"></v-pagination>
+      <v-pagination v-model="page" :length="len" @input="paginate"></v-pagination>
     </div>
   </v-container>
 </template>
@@ -65,13 +65,20 @@ export default {
   data() {
     return {
       reports: [],
-      page: 1
+      page: 1,
+      report_paginate: [],
+      num: 15,
+      len: 1
     };
   },
   async created() {
     try {
       const response = await reportService.getReports();
       this.reports = response.data.data;
+      this.len = Math.ceil(this.reports.length / this.num);
+      for (let i = 0; i < this.reports.length && i < this.num; i++) {
+        this.report_paginate.push(this.reports[i]);
+      }
     } catch (error) {
       this.$swal("Ohh!", "Có gì đó sai, hãy tải lại trang", "error");
     }
@@ -81,6 +88,18 @@ export default {
       this.reports = this.reports.filter(report => report._id !== id);
       this.$swal("Great!", "Xóa thành công", "success");
     });
+  },
+  methods: {
+    paginate() {
+      this.report_paginate = [];
+      for (
+        let i = (this.page - 1) * this.num;
+        i < this.reports.length && i < this.page * this.num;
+        i++
+      ) {
+        this.report_paginate.push(this.reports[i]);
+      }
+    }
   }
 };
 </script>

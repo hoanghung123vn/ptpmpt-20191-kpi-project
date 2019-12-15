@@ -20,12 +20,12 @@
         </v-list-item>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>Ngày tạo: {{ new Date(group.createdAt).toGMTString() }}</v-list-item-title>
+            <v-list-item-title>Ngày tạo: {{ new Date(group.createdAt).toLocaleDateString() }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>Ngày cập nhật: {{ new Date(group.updatedAt).toGMTString() }}</v-list-item-title>
+            <v-list-item-title>Ngày cập nhật: {{ new Date(group.updatedAt).toLocaleDateString() }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-card-actions>

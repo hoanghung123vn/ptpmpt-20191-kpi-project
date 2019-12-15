@@ -109,10 +109,20 @@
         <router-link :to="{name: 'reports'}" class="side_bar_link">
           <v-list-item link @click="changeto9">
             <v-list-item-action>
-              <v-icon :color="active9">mdi-content-save-edit-outline</v-icon>
+              <v-icon :color="active9">mdi-file-word-box-outline</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Quản lý mẫu báo cáo</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        <router-link :to="{name: 'report-fields'}" class="side_bar_link">
+          <v-list-item link @click="changeto10">
+            <v-list-item-action>
+              <v-icon :color="active10">mdi-file-document-box-minus-outline</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Cấu hình trường báo cáo</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </router-link>
@@ -155,7 +165,8 @@ export default {
     active6: "",
     active7: "",
     active8: "",
-    active9: ""
+    active9: "",
+    active10: ""
   }),
   mounted() {
     //this.fetchUser();
@@ -189,6 +200,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Danh sách người dùng";
     },
     changeto2() {
@@ -201,6 +213,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Quản lý cơ cấu bộ phận";
     },
     changeto3() {
@@ -213,6 +226,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Cấu hình KPI phòng ban";
     },
     changeto4() {
@@ -225,6 +239,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Thiết lập nhóm quyền";
     },
     changeto5() {
@@ -237,6 +252,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Phân quyền cho tài nguyên";
     },
     changeto6() {
@@ -249,6 +265,7 @@ export default {
       this.active7 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Cấu hình KPI dự án";
     },
     changeto7() {
@@ -260,6 +277,7 @@ export default {
       this.active6 = "";
       this.active8 = "";
       this.active9 = "";
+      this.active10 = "";
       this.active7 = "primary";
       this.title = "Quản lý nhãn công việc";
     },
@@ -273,6 +291,7 @@ export default {
       this.active7 = "";
       this.active8 = "primary";
       this.active9 = "";
+      this.active10 = "";
       this.title = "Cấu hình KPI chức vụ";
     },
     changeto9() {
@@ -284,8 +303,22 @@ export default {
       this.active6 = "";
       this.active7 = "";
       this.active8 = "";
+      this.active10 = "";
       this.active9 = "primary";
       this.title = "Quản lý báo cáo";
+    },
+    changeto10() {
+      this.active1 = "";
+      this.active2 = "";
+      this.active3 = "";
+      this.active4 = "";
+      this.active5 = "";
+      this.active6 = "";
+      this.active7 = "";
+      this.active8 = "";
+      this.active9 = "";
+      this.active10 = "primary";
+      this.title = "Cấu hình trường báo cáo";
     }
   }
 };

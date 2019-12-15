@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(group, index) in groups" :key="group._id">
+          <tr v-for="(group, index) in group_paginate" :key="group._id">
             <td class="text-center">{{ index + 1 }}</td>
             <td class="text-center">{{ group.name }}</td>
             <td class="text-center">
@@ -26,7 +26,7 @@
       </template>
     </v-simple-table>
     <div class="text-center mt-5">
-      <v-pagination v-model="page" :length="3"></v-pagination>
+      <v-pagination v-model="page" :length="len" @input="paginate"></v-pagination>
     </div>
   </v-container>
 </template>
@@ -49,12 +49,19 @@ export default {
   data() {
     return {
       groups: [],
-      page: 1
+      group_paginate: [],
+      page: 1,
+      num: 15,
+      len: 1
     };
   },
   async created() {
     const response = await permissionService.getRoles();
     this.groups = response.data;
+    this.len = Math.ceil(this.groups.length / this.num);
+    for (let i = 0; i < this.groups.length && i < this.num; i++) {
+      this.group_paginate.push(this.groups[i]);
+    }
   },
   mounted() {
     bus.$on("addGroup", group => {
@@ -68,6 +75,16 @@ export default {
   methods: {
     refreshActive() {
       bus.$emit("refreshActive");
+    },
+    paginate() {
+      this.group_paginate = [];
+      for (
+        let i = (this.page - 1) * this.num;
+        i < this.groups.length && i < this.page * this.num;
+        i++
+      ) {
+        this.group_paginate.push(this.groups[i]);
+      }
     }
   }
 };
