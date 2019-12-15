@@ -9,15 +9,33 @@ export default class DepartmentService {
   authToken= "";
 
   getAllDepartment() {
-    return axios(`${apiBaseURL}/organizationalStructure/listOrganization`);
+    return axios(`${apiBaseURL}/organizationalStructure/listOrganization`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    });
   }
 
   getAllDepartmentLevel() {
-    return axios(`${apiBaseURL}/organizationalStructure/listOrganizationLevel`);
+    return axios(`${apiBaseURL}/organizationalStructure/listOrganizationLevel`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    });
   }
 
   getDepartmentById(departmentId) {
-    return axios.get(`${apiBaseURL}/${departmentId}`)
+    return axios.get(`${apiBaseURL}/${departmentId}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    });
   }
 
   createDepartment(code, description, levelId, levelName, name) {
@@ -33,6 +51,12 @@ export default class DepartmentService {
       url: `${apiBaseURL}/organizationalStructure/create`,
       headers: {
         "Content-Type": "application/json"
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
   }
@@ -52,24 +76,54 @@ export default class DepartmentService {
       headers: {
         "Content-Type": "application/json"
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
   getDepartmentDetail(id)
   {
-    return axios.get(`${apiBaseURL}/organizationalStructure/detailOrganization?organizationId=${id}`)
+    return axios.get(`${apiBaseURL}/organizationalStructure/detailOrganization?organizationId=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   deleteDepartment(id) {
-    return axios.post(`${apiBaseURL}/organizationalStructure/delete?id=${id}`)
+    return axios.post(`${apiBaseURL}/organizationalStructure/delete?id=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   criteriasDepartment(id) {
-    return axios.get(`http://206.189.34.124:5000/api/group8/kpis?department_id=${id}`)
+    return axios.get(`http://206.189.34.124:5000/api/group8/kpis?department_id=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   positionDepartment(id) {
-    return axios.get(`${apiBaseURL}/position/findByOrganization?organizationId=${id}`)
+    return axios.get(`${apiBaseURL}/position/findByOrganization?organizationId=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   positionRole(listGroup) {
@@ -84,22 +138,46 @@ export default class DepartmentService {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${this.authToken}`
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
   findByLevelId(levelId)
   {
-    return axios.get(`${apiBaseURL}/organizationalStructure/findByLevel?levelId=${levelId}`)
+    return axios.get(`${apiBaseURL}/organizationalStructure/findByLevel?levelId=${levelId}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   findByname(name)
   {
-    return axios.get(`${apiBaseURL}/organizationalStructure/findByNameContaining?name=${name}`)
+    return axios.get(`${apiBaseURL}/organizationalStructure/findByNameContaining?name=${name}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   deleteDepartmentLevel(id)
   {
-    return axios.post(`${apiBaseURL}/organizationalStructure/deleteOrganizationLevel?levelId=${id}`)
+    return axios.post(`${apiBaseURL}/organizationalStructure/deleteOrganizationLevel?levelId=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   createLevelDepartment(levelName, levelDescription)
@@ -113,6 +191,12 @@ export default class DepartmentService {
       url: `${apiBaseURL}/organizationalStructure/createOrganizationLevel`,
       headers: {
         "Content-Type": "application/json"
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
   }
@@ -130,6 +214,12 @@ export default class DepartmentService {
       headers: {
         "Content-Type": "application/json"
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
@@ -140,6 +230,12 @@ export default class DepartmentService {
       headers:
       {
         "Authorization": `Bearer ${this.authToken}`
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
   }
@@ -157,6 +253,12 @@ export default class DepartmentService {
       headers: {
         "Content-Type": "application/json"
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
@@ -173,6 +275,12 @@ export default class DepartmentService {
       headers: {
         "Content-Type": "application/json"
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
@@ -187,6 +295,12 @@ export default class DepartmentService {
       url: `http://18.217.21.235:8083/api/v1/departmentKPI/getDepartmentKPIByYear`,
       headers: {
         "Content-Type": "application/json"
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
   }
@@ -204,17 +318,35 @@ export default class DepartmentService {
       headers: {
         "Content-Type": "application/json"
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
   deletePosition(id)
   {
-    return axios.post(`${apiBaseURL}/position/delete?positionId=${id}`)
+    return axios.post(`${apiBaseURL}/position/delete?positionId=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   getLog()
   {
-    return axios.get(`${apiBaseURL}/logOrganization/allList`)
+    return axios.get(`${apiBaseURL}/logOrganization/allList`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
   getAllModule()
@@ -224,6 +356,12 @@ export default class DepartmentService {
       headers:
       {
         "Authorization": `Bearer ${this.authToken}`
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
   }
@@ -235,6 +373,12 @@ export default class DepartmentService {
       headers:
       {
         "Authorization": `Bearer ${this.authToken}`
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
     
@@ -253,6 +397,12 @@ export default class DepartmentService {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${this.authToken}`
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
@@ -268,6 +418,12 @@ export default class DepartmentService {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${this.authToken}`
+      }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
       }
     });
   }
@@ -286,6 +442,12 @@ export default class DepartmentService {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${this.authToken}`
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
@@ -303,12 +465,24 @@ export default class DepartmentService {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${this.authToken}`
       }
+    }).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
     });
   }
 
   getDetailPosition(id)
   {
-    return axios.get(`${apiBaseURL}/position/detailPosition?positionId=${id}`)
+    return axios.get(`${apiBaseURL}/position/detailPosition?positionId=${id}`).catch(function (error)
+    {
+      if(error.response)
+      {
+        alert("Đã xảy ra lỗi kết nối tới server");
+      }
+    })
   }
 
 }
