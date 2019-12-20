@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiBaseURL = "https://dsd05-dot-my-test-project-252009.appspot.com";
-const apiBaseURL = "http://quang-dot-my-test-project-252009.appspot.com";
+const apiBaseURL = "https://dsd05-dot-my-test-project-252009.appspot.com";
+// const apiBaseURL = "http://quang-dot-my-test-project-252009.appspot.com";
 const apiBaseURLUser = "https://api-ptpmpt-18.herokuapp.com/api";
 
 export default class UserService {
