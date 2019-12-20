@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="department in dataKPI.criterias" :key="department.name">
+                <tr v-for="department in dataKPI.criterias" :key="department.id">
                     <td class="text-center">{{ department.name }}</td>
                     <td class="text-center">{{ department.ratio }}</td>                   
                     <td class="text-center">{{ department.note }}</td> 
@@ -43,7 +43,12 @@
             </tbody>
         </template>
     </v-simple-table>
-    <UpdateAllKPIDepartment :dataKPI="dataKPI" />
+    <div class="block-1" v-if="bRet == true">
+      <UpdateAllKPIDepartment :dataKPI=this.dataKPI />
+    </div>
+    <div class="block-2" v-else-if="bRet == false">
+      <PostAllKPIDepartment :dataKPI=this.dataKPI />
+    </div>
     </v-container>
 </template>
 
@@ -68,7 +73,7 @@ import EditKPI from "../components/EditKPI";
 import DeleteKPI from "../components/DeleteKPI";
 import AddKPI from "../components/AddKPI";
 import UpdateAllKPIDepartment from "../components/UpdateAllKPIDepartment";
-
+import PostAllKPIDepartment from "../components/PostAllKPIDepartment";
 
 import ConfigurationKPIService from "../ConfigurationKPIService.js";
 const configurationKPIService = new ConfigurationKPIService();
@@ -81,7 +86,8 @@ export default {
     EditKPI,
     DeleteKPI,
     AddKPI,
-    UpdateAllKPIDepartment
+    UpdateAllKPIDepartment,
+    PostAllKPIDepartment
   },
   data() {
     return {
@@ -89,6 +95,8 @@ export default {
         criterias: [],
         id: "",
       },
+      arrCriterias: [],
+      bRet: true,
       DepartmentId : "",
       nameDepartment: [],
       listDepartment: []
@@ -98,25 +106,39 @@ export default {
     
     bus.$on("addKPI", department => {
       const newdepartment = department;
-      this.dataKPI.criterias.push(newdepartment);
+      newdepartment.id = this.dataKPI.criterias.length + 1;
+      this.arrCriterias.push(newdepartment);
+      this.dataKPI.criterias = this.arrCriterias;
+      //this.dataKPI.criterias.push(newdepartment);
       alert("Bạn đã thêm mới tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       //this.$swal("Great!", "Tạo mới thành công", "success");
     });
     bus.$on("deleteKPI", name => {
+       this.arrCriterias = this.arrCriterias.filter(department => department.name !== name);
       this.dataKPI.criterias = this.dataKPI.criterias.filter(department => department.name !== name);
       alert("Bạn đã xóa tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       //this.$swal("Great!", "Xóa thành công", "success");
     });
     bus.$on("updateKPI", department => {
-      const index = this.dataKPI.criterias.findIndex(kpi => kpi.name === department.name);
+      const index = this.dataKPI.criterias.findIndex(kpi => kpi.id === department.id);
       this.dataKPI.criterias.splice(index, 1, department);
+      const index2 = this.arrCriterias.findIndex(kpi => kpi.id === department.id);
+      this.arrCriterias.splice(index2, 1, department);
       alert("Bạn đã thay đổi tiêu chí KPI. Hãy cập nhật lưới tiêu chí KPI bên dưới");
       //this.$swal("Great!", "Cập nhật thành công", "success");
     });
+    if(this.bRet == true){
     bus.$on("updateAllKPIDepartment", dataKPI => {
       this.dataKPI = dataKPI;
       this.$swal("Great!", "Cập nhật thành công", "success");
-    });
+      });
+    }
+    else{
+      bus.$on("postAllKPIDepartment", dataKPI => {
+      this.dataKPI = dataKPI;
+      this.$swal("Great!", "Cập nhật thành công", "success");
+      });
+    }
   },
   async created() {
     var response = await configurationKPIService.getlistDepartment();
@@ -129,20 +151,34 @@ export default {
   methods:{
     async getDepartment(id){
       try {
+        this.dataKPI.criterias = [];
+        this.dataKPI.id = "";
+        this.arrCriterias = [];
         var response = await configurationKPIService.getKPIDepartmentById(id);
-        this.dataKPI = response.data;
+        let data= []
+        response.data.criterias.map(async(value,index)=>{
+          let ob={
+            id:index+1,
+            name: value.name,
+            note:value.note,
+            ratio: value.ratio
+          }
+         await data.push(ob)
+        })
+        this.dataKPI.criterias = await data;
+        this.arrCriterias = this.dataKPI.criterias;
+
+        this.dataKPI.id = response.data.id;
+        this.bRet = true;
       } catch (error) {
-        //const message = error;
         alert("Phòng ban này chưa được cấu hình KPI");
-        //this.$swal("Đã có lỗi xảy ra!", `${message}`);
         this.setKPIDepartment(id);
       }
-     //eda3b9b1-ce95-47f7-91ec-e03d1eb2bc4d, 1664a77a-9c82-46af-83fe-b05b5e2e4bf8
-    
     },
     async setKPIDepartment(id){
       this.dataKPI.id = id;
       this.dataKPI.criterias = "";
+      this.bRet =  false;
     },
 
     async DepartmentChange() {

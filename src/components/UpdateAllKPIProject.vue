@@ -11,7 +11,6 @@
 <script>
 import ConfigurationKPIService from "../ConfigurationKPIService.js";
 const configurationKPIService = new ConfigurationKPIService();
-
 import bus from "../bus";
 export default {
   name: "UpdateAllKPIProject",
@@ -26,26 +25,22 @@ export default {
   methods: {
     async updateAllKPIProject() {
       try {
-        const response = await configurationKPIService.updateAllKPIProject(
+          const response = await configurationKPIService.updateAllKPIProject(
           this.dataKPI.criterias,
           this.dataKPI.id
         );
-        //console.log( this.dataKPI.criterias);
-        //console.log(response.data.message);
-        //console.log(this.dataKPI.id);
         if (response.data.message == "Cấu hình tiêu chí thành công") {
           bus.$emit("updateAllKPIProject", this.dataKPI);
           this.dialogupdate = false;
           this.$swal("Great!", "Cập nhật thành công", "success");
-        } else {
-          // console.log("test1");
+        } 
+        else {
           const message = response.data.message;
           this.dialogupdate = false;
           //alert("Đã có lỗi xảy ra!", `${message}`);
           this.$swal("Đã có lỗi xảy ra!", `${message}`);
         }
       } catch (error) {
-        //console.log("test2");
         this.dialogupdate = false;
         const message = error;
         this.$swal("Đã có lỗi xảy ra!", `${message}`);
